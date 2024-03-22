@@ -1,7 +1,7 @@
 import React, {FC, ReactNode} from 'react';
 
 interface HeaderProps {
-  actions: ReactNode[];
+  actions: ReactNode;
 }
 
 const Header: FC<HeaderProps> = ({actions}) => {

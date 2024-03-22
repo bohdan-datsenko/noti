@@ -1,20 +1,23 @@
 import React, {FC} from 'react';
 import {Drawer} from "../../ui/Drawer";
+import {INote} from '../../../types/notes';
 
 interface SidebarProps {
-    items: string[];
+    items: INote[];
     isOpen: boolean;
     handleClose: () => void;
+    handleSelect: (id: number) => void;
 }
 
-const Sidebar: FC<SidebarProps> = ({items, isOpen, handleClose}) => {
+const Sidebar: FC<SidebarProps> = ({items, isOpen, handleClose, handleSelect}) => {
   const noteTitles = <ul>
-    {items.map((item, index) => (
-      <li key={index} className='flex justify-center'>
-        <button className='w-full inline-block text-start px-4 py-2 font-semibold truncate border-b-2 border-b-neutral-200
+    {items.map((item) => (
+      <li key={item.id} className='flex justify-center'>
+        {/*todo replace with link?*/}
+        <button onClick={() => handleSelect(item.id)} className='w-full inline-block text-start px-4 py-2 font-semibold truncate border-b-2 border-b-neutral-200
                             hover:border-b-amber-300 hover:bg-amber-100
                             active:border-b-amber-400 active:bg-amber-200'
-        >{item}</button>
+        >{item.title}</button>
       </li>
     ))}
   </ul>;

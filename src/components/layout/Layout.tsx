@@ -18,7 +18,7 @@ const Layout: FC<LayoutProps> = ({handleOpenMenu, children}) => {
 
   return (
       <div className='flex flex-col min-h-screen'>
-          <Header actions={[openBtn]} />
+          <Header actions={openBtn} />
           <Main>
             {children}
           </Main>
