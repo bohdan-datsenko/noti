@@ -5,7 +5,7 @@ export interface INote {
 }
 
 export interface NotesState {
-    selectedId: number;
+    selectedId: string;
     notes: INote[];
 }
 
