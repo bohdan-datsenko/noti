@@ -6,10 +6,10 @@ const Footer = () => {
             <h2 className='uppercase text-xl'>Contacts</h2>
             <ul>
                 <li>
-                    <a href='https://github.com/bohdan-datsenko' target='_blank' rel='noreferrer'>Github</a>
+                    <a className='hover:underline' href='https://github.com/bohdan-datsenko' target='_blank' rel='noreferrer'>Github</a>
                 </li>
                 <li>
-                    <a href='https://ua.linkedin.com/in/bohdan-datsenko-2788a622b' target='_blank' rel='noreferrer'>LinkedIn</a>
+                    <a className='hover:underline' href='https://ua.linkedin.com/in/bohdan-datsenko-2788a622b' target='_blank' rel='noreferrer'>LinkedIn</a>
                 </li>
             </ul>
         </footer>

@@ -2,11 +2,12 @@ import React, {FC} from "react";
 
 interface DrawerProps {
     isOpen: boolean;
-    handleClose(): void;
+    handleClose: () => void;
     children: React.ReactNode;
+    actions: React.ReactNode[];
 }
 
-export const Drawer: FC<DrawerProps> = ({ children, isOpen, handleClose }) => {
+export const Drawer: FC<DrawerProps> = ({ children, actions, isOpen, handleClose }) => {
     return (
         <div
             className={
@@ -18,7 +19,7 @@ export const Drawer: FC<DrawerProps> = ({ children, isOpen, handleClose }) => {
         >
             <div
                 className={
-                    'flex flex-col w-2/3 max-w-lg left-0 overflow-hidden absolute bg-white h-full shadow-xl delay-400 duration-500 ease-in-out transition-all transform' +
+                    'px-1 flex flex-col w-2/3 max-w-lg left-0 overflow-hidden absolute bg-white h-full shadow-xl delay-400 duration-500 ease-in-out transition-all transform' +
                     (isOpen ? ' translate-x-0 ' : ' -translate-x-full')
                 }
             >
@@ -32,7 +33,12 @@ export const Drawer: FC<DrawerProps> = ({ children, isOpen, handleClose }) => {
                             active:bg-gray-50 active:before:bg-red-600 active:after:bg-red-600 active:scale-110'>
                         </button>
                     </div>
+
                     {children}
+
+                    <div>
+                        {actions.map(action => action)}
+                    </div>
                 </div>
             </div>
             <div

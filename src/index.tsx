@@ -1,8 +1,10 @@
 import React from 'react';
 import ReactDOM from 'react-dom/client';
-import App from './components/App';
+import {NotesPage} from './pages/NotesPage';
 import {Provider} from 'react-redux';
 import {setupStore} from './store/store';
+
+import './styles/main.css';
 
 const store = setupStore();
 
@@ -12,7 +14,7 @@ const root = ReactDOM.createRoot(
 root.render(
   <React.StrictMode>
     <Provider store={store}>
-      <App />
+      <NotesPage />
     </Provider>
   </React.StrictMode>
 );

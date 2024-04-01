@@ -1,66 +1,53 @@
 import React, {FC} from 'react';
 import {Drawer} from "../../ui/Drawer";
-import {INote} from '../../../types/notes';
-import {BiSolidTrash} from 'react-icons/bi';
-import {useAppDispatch, useAppSelector} from '../../../hooks/redux';
-import {removeNote, selectNote} from '../../../store/slices/noteSlice';
-import IconButton from '../../ui/IconButton';
+import {NotesSelectList} from '../../NotesSelectList';
+import {useAppDispatch} from '../../../hooks/redux';
+import {addDraftNote} from '../../../store/slices/notes/noteSlice';
 
 interface SidebarProps {
-    items: INote[];
     isOpen: boolean;
     handleClose: () => void;
-    handleSelect: (id: number) => void;
-    action?: React.ReactNode;
 }
 
-const Sidebar: FC<SidebarProps> = ({items, isOpen, handleClose, handleSelect, action}) => {
+const Sidebar: FC<SidebarProps> = ({isOpen, handleClose}) => {
   const dispatch = useAppDispatch();
-  const selectedId = useAppSelector(state => state.noteReducer.selectedId);
+  const handleCreate = () => {
+    dispatch(addDraftNote({title: '', text: ''}));
+  };
 
-  const handleRemove = (e: React.MouseEvent, id: number) => {
-    e.stopPropagation();
-    dispatch(removeNote(id));
-    if(selectedId === id) {
-      dispatch(selectNote(-1));
-    }
-  }
+  const handleCreateDrawer = () => {
+    handleCreate();
+    handleClose();
+  };
 
-  const menuItemButton = (id: number, value: string) =>
-    <IconButton handleClick={() => handleSelect(id)}
-                value={value !== '' ? value : 'untitled'}
-                isSelected={id === selectedId}
-                secondaryButton={{
-                  handleClick: (e) => handleRemove(e, id)
-                }}
-    >
-      <BiSolidTrash size={28} className='p-1 rounded hover:bg-red-600 hover:fill-white' />
-    </IconButton>;
+  const createButton =
+    <button onClick={handleCreate} className='mx-auto w-full px-4 py-2 bg-amber-300 text-white rounded uppercase transition-colors
+                      hover:bg-amber-400'>
+      Create
+    </button>;
 
-  const noteTitles = <ul>
-    {items.map((item) => (
-      <li key={item.id} className='flex justify-center'>
-        {menuItemButton(item.id, item.title)}
-      </li>
-    ))}
-  </ul>;
-
+  const createButtonDrawer =
+    <button onClick={handleCreateDrawer} className='mx-auto w-full px-4 py-2 bg-amber-300 text-white rounded uppercase transition-colors
+                      hover:bg-amber-400'>
+      Create
+    </button>;
   return (
       <>
-          <Drawer isOpen={isOpen} handleClose={handleClose}>
-            {noteTitles}
-          </Drawer>
-          <div className='hidden sm:block border-r-2 border-zinc-300 bg-zinc-50'>
-              <div className='p-2'>
-                  <div className='flex justify-between items-center'>
-                    <h2 className='px-4 text-2xl mb-4'>Your notes</h2>
-                    {action}
-                  </div>
-
-                <hr className='w-3/4 mb-2 mx-auto border-t-2 border-t-zinc-300' />
-              </div>
-            {noteTitles}
+        <Drawer actions={[createButtonDrawer]} isOpen={isOpen} handleClose={handleClose}>
+          <NotesSelectList handleClose={handleClose} />
+        </Drawer>
+        <div className='hidden overflow-hidden sm:flex sm:flex-col border-r-2 border-zinc-300 bg-zinc-50'>
+          <div className='p-2'>
+            <div className='flex justify-between items-center'>
+              <h2 className='px-4 text-2xl mb-4'>Your notes</h2>
+            </div>
+            <hr className='w-3/4 mb-2 mx-auto border-t-2 border-t-zinc-300' />
           </div>
+          <NotesSelectList handleClose={handleClose} />
+          <div className='mb-2 w-11/12 mx-auto'>
+            {createButton}
+          </div>
+        </div>
       </>
   );
 };
