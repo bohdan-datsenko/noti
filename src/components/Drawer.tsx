@@ -36,9 +36,9 @@ export const Drawer: FC<DrawerProps> = ({ children, actions, isOpen, handleClose
 
                     {children}
 
-                    <div>
-                        {actions.map(action => action)}
-                    </div>
+                    <ul>
+                        {actions.map((action, index) => <li key={index}>{action}</li>)}
+                    </ul>
                 </div>
             </div>
             <div
