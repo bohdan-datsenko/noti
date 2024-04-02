@@ -1,4 +1,4 @@
-import Sidebar from '../layout/sidebar/Sidebar';
+import Sidebar from '../../../components/Sidebar';
 import React, {FC} from 'react';
 
 interface SidebarComponentProps {

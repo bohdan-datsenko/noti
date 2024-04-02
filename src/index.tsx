@@ -2,9 +2,9 @@ import React from 'react';
 import ReactDOM from 'react-dom/client';
 import {NotesPage} from './pages/NotesPage';
 import {Provider} from 'react-redux';
-import {setupStore} from './store/store';
+import {setupStore} from "./modules/app";
 
-import './styles/main.css';
+import './main.css';
 
 const store = setupStore();
 

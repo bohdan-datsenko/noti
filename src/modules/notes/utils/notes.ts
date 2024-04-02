@@ -1,6 +1,6 @@
-import {AppDispatch} from '../store/store';
-import {createNote, fetchNotes, updateNoteById} from '../store/slices/notes/thunks';
-import {removeDraftNote} from '../store/slices/notes/noteSlice';
+import {AppDispatch} from '../../app/redux/store';
+import {createNote, fetchNotes, updateNoteById} from '../redux/thunks';
+import {removeDraftNote} from '../redux/noteSlice';
 import {IDraftNote, INote} from '../types/notes';
 
 export const handleSave = async (note: IDraftNote | undefined, dispatch: AppDispatch) => {

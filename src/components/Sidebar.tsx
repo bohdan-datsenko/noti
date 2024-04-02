@@ -1,8 +1,9 @@
 import React, {FC} from 'react';
-import {Drawer} from "../../ui/Drawer";
-import {NotesSelectList} from '../../NotesSelectList';
-import {useAppDispatch} from '../../../hooks/redux';
-import {addDraftNote} from '../../../store/slices/notes/noteSlice';
+import {Drawer} from "./Drawer";
+import {NotesSelectList} from '../modules/notes/components/NotesSelectList';
+import {useAppDispatch} from '../modules/app';
+import {addDraftNote} from '../modules/notes/redux/noteSlice';
+import {CreateButton} from "../modules/notes/components/CreateButton";
 
 interface SidebarProps {
     isOpen: boolean;
@@ -20,20 +21,12 @@ const Sidebar: FC<SidebarProps> = ({isOpen, handleClose}) => {
     handleClose();
   };
 
-  const createButton =
-    <button onClick={handleCreate} className='mx-auto w-full px-4 py-2 bg-amber-300 text-white rounded uppercase transition-colors
-                      hover:bg-amber-400'>
-      Create
-    </button>;
-
-  const createButtonDrawer =
-    <button onClick={handleCreateDrawer} className='mx-auto w-full px-4 py-2 bg-amber-300 text-white rounded uppercase transition-colors
-                      hover:bg-amber-400'>
-      Create
-    </button>;
   return (
       <>
-        <Drawer actions={[createButtonDrawer]} isOpen={isOpen} handleClose={handleClose}>
+        <Drawer
+          actions={[<CreateButton handleCreate={handleCreateDrawer} />]}
+          isOpen={isOpen} handleClose={handleClose}
+        >
           <NotesSelectList handleClose={handleClose} />
         </Drawer>
         <div className='hidden overflow-hidden sm:flex sm:flex-col border-r-2 border-zinc-300 bg-zinc-50'>
@@ -45,7 +38,7 @@ const Sidebar: FC<SidebarProps> = ({isOpen, handleClose}) => {
           </div>
           <NotesSelectList handleClose={handleClose} />
           <div className='mb-2 w-11/12 mx-auto'>
-            {createButton}
+            <CreateButton handleCreate={handleCreate} />
           </div>
         </div>
       </>

@@ -1,14 +1,14 @@
 import React, {useEffect, useState} from 'react';
-import Layout from "../components/layout/Layout";
-import NoteForm from "../components/NoteForm";
-import {IDraftNote} from '../types/notes';
-import {useAppDispatch, useAppSelector} from '../hooks/redux';
-import {selectNote} from '../store/slices/notes/noteSlice';
-import {fetchNotes} from '../store/slices/notes/thunks';
-import {useKeyboardShortcut} from '../hooks/useKeyboardShortcut';
-import {shortcuts} from '../constants/notes';
-import {SidebarComponent} from '../components/ui/SidebarCompoment';
-import {handleSave} from '../utils/notes';
+import Layout from "../components/Layout";
+import NoteForm from "../modules/notes/components/NoteForm";
+import {IDraftNote} from '../modules/notes/types/notes';
+import {useAppDispatch, useAppSelector} from '../modules/app/hooks/redux';
+import {selectNote} from '../modules/notes/redux/noteSlice';
+import {fetchNotes} from '../modules/notes/redux/thunks';
+import {useKeyboardShortcut} from '../modules/app/hooks/useKeyboardShortcut';
+import {shortcuts} from '../modules/notes/constants/notes';
+import {SidebarComponent} from '../modules/app/components/SidebarCompoment';
+import {handleSave} from '../modules/notes/utils/notes';
 
 export const NotesPage = () => {
   const dispatch = useAppDispatch();

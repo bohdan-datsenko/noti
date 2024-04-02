@@ -1,6 +1,6 @@
 import {createAsyncThunk} from '@reduxjs/toolkit';
-import {NotesAPI} from '../../../api/NotesAPI';
-import {INote} from '../../../types/notes';
+import {NotesAPI} from '../api/NotesAPI';
+import {INote} from '../types/notes';
 
 export const fetchNotes = createAsyncThunk(
   'notes/fetchNotes',

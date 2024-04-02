@@ -1,8 +1,8 @@
 import {createSlice, PayloadAction} from '@reduxjs/toolkit';
-import {IDraftNote, INote} from '../../../types/notes';
+import {IDraftNote, INote} from '../types/notes';
 import {createNote, fetchNotes, updateNoteById} from './thunks';
 import {notesMatchers} from './matchers';
-import {ActionWithMetadata} from '../../types/types';
+import {ActionWithMetadata} from '../../app/types/types';
 
 const notesSlice = createSlice({
   name: 'notes',

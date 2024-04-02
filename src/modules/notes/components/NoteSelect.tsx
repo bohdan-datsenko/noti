@@ -1,9 +1,9 @@
 import React, {FC} from 'react';
 import {BiSolidTrash} from 'react-icons/bi';
-import SelectWithIcon from './ui/SelectWithIcon';
-import {fetchNotes, removeNoteById} from '../store/slices/notes/thunks';
-import {removeDraftNote, selectNote} from '../store/slices/notes/noteSlice';
-import {useAppDispatch} from '../hooks/redux';
+import SelectWithIcon from '../../../ui/SelectWithIcon';
+import {fetchNotes, removeNoteById} from '../redux/thunks';
+import {removeDraftNote, selectNote} from '../redux/noteSlice';
+import {useAppDispatch} from '../../app';
 
 interface SelectIconButtonProps {
   id: number;

@@ -1,6 +1,6 @@
 import React, {FC} from 'react';
 import {NoteSelect} from './NoteSelect';
-import {useAppSelector} from '../hooks/redux';
+import {useAppSelector} from '../../app';
 
 interface NotesSelectListProps {
   handleClose: () => void;
