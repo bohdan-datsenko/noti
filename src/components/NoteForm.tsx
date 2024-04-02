@@ -2,6 +2,7 @@ import React, {useEffect, useState} from 'react';
 import {useAppDispatch, useAppSelector} from '../hooks/redux';
 import {updateDraftNote} from '../store/slices/notes/noteSlice';
 import {handleSave} from '../utils/notes';
+
 const NoteForm = () => {
   const dispatch = useAppDispatch();
   const selectedNoteId = useAppSelector(state => state.noteReducer.selectedId);
