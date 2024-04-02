@@ -8,3 +8,5 @@ export {
   useAppDispatch,
   useAppSelector,
 };
+
+export type {AppDispatch} from './redux/store';

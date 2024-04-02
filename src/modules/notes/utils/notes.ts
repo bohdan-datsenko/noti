@@ -1,7 +1,8 @@
-import {AppDispatch} from '../../app/redux/store';
-import {createNote, fetchNotes, updateNoteById} from '../redux/thunks';
-import {removeDraftNote} from '../redux/noteSlice';
+import {AppDispatch} from '../../app';
+import {createNote, fetchNotes, removeNoteById, updateNoteById} from '../redux/thunks';
+import {addDraftNote, removeDraftNote} from '../redux/noteSlice';
 import {IDraftNote, INote} from '../types/notes';
+import React from "react";
 
 export const handleSave = async (note: IDraftNote | undefined, dispatch: AppDispatch) => {
   if (!note || !note.isEdited) return;
@@ -9,7 +10,7 @@ export const handleSave = async (note: IDraftNote | undefined, dispatch: AppDisp
   if (note.isNew) {
     const newNote = { id: note.id, title: note.newTitle, text: note.newText } as INote;
     await dispatch(createNote(newNote));
-    await dispatch(removeDraftNote(note.id));
+    dispatch(removeDraftNote(note.id));
   } else {
     await dispatch(updateNoteById({
       id: note.id,
@@ -21,4 +22,29 @@ export const handleSave = async (note: IDraftNote | undefined, dispatch: AppDisp
   dispatch(fetchNotes());
 };
 
-export const isIncluded = (items: number[], item: number) => items.includes(item);
+export const handleCreate = (dispatch: AppDispatch) => {
+  dispatch(addDraftNote({title: '', text: ''}));
+}
+
+export const handleRemove = (id: number,
+                             isNew: boolean,
+                             dispatch: AppDispatch,
+                             e?: React.MouseEvent<HTMLButtonElement>) =>
+{
+  if (e) {
+    e.stopPropagation();
+  }
+
+  const isConfirmed = window.confirm('Are you sure you want to remove note?');
+  if (!isConfirmed){
+    return;
+  }
+
+  if (!isNew) {
+    dispatch(removeNoteById(id)).then(() => {
+      dispatch(fetchNotes());
+    });
+  } else {
+    dispatch(removeDraftNote(id));
+  }
+}

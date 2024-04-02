@@ -1,9 +1,9 @@
 import React, {FC} from 'react';
 import {BiSolidTrash} from 'react-icons/bi';
 import SelectWithIcon from '../../../ui/SelectWithIcon';
-import {fetchNotes, removeNoteById} from '../redux/thunks';
-import {removeDraftNote, selectNote} from '../redux/noteSlice';
+import {selectNote} from '../redux/noteSlice';
 import {useAppDispatch} from '../../app';
+import {handleRemove} from "../utils/notes";
 
 interface SelectIconButtonProps {
   id: number;
@@ -25,27 +25,12 @@ export const NoteSelect: FC<SelectIconButtonProps> = (
 ) => {
   const dispatch = useAppDispatch();
 
-  const handleRemove = (e: React.MouseEvent) => {
-    e.stopPropagation();
-
-    const isConfirmed = window.confirm('Are you sure you want to remove note?');
-    if (!isConfirmed){
-      return;
-    }
-
-    if (!isNew) {
-      dispatch(removeNoteById(id)).then(() => {
-        dispatch(fetchNotes());
-      });
-    } else {
-      dispatch(removeDraftNote(id));
-    }
-  }
-
   const handleSelect = () => {
     dispatch(selectNote(id));
     handleClose();
   }
+
+  const handleRemoveNote = (e: React.MouseEvent<HTMLButtonElement>) => handleRemove(id, isNew, dispatch, e)
 
   return (
     <SelectWithIcon id={id}
@@ -53,7 +38,9 @@ export const NoteSelect: FC<SelectIconButtonProps> = (
                     value={value !== '' ? value : 'untitled'}
                     isSelected={isSelected}
                     isUnsaved={isEdited}
-                    secondaryButton={{handleClick: handleRemove}}
+                    secondaryButton={{
+                      handleClick: handleRemoveNote
+                    }}
     >
       {/*todo does it hurt bundle size?*/}
       <BiSolidTrash size={28} className='p-1 rounded hover:bg-red-600 hover:fill-white' />

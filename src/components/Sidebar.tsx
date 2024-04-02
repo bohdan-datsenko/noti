@@ -2,8 +2,8 @@ import React, {FC} from 'react';
 import {Drawer} from "./Drawer";
 import {NotesSelectList} from '../modules/notes/components/NotesSelectList';
 import {useAppDispatch} from '../modules/app';
-import {addDraftNote} from '../modules/notes/redux/noteSlice';
 import {CreateButton} from "../modules/notes/components/CreateButton";
+import {handleCreate} from "../modules/notes/utils/notes";
 
 interface SidebarProps {
     isOpen: boolean;
@@ -12,12 +12,9 @@ interface SidebarProps {
 
 const Sidebar: FC<SidebarProps> = ({isOpen, handleClose}) => {
   const dispatch = useAppDispatch();
-  const handleCreate = () => {
-    dispatch(addDraftNote({title: '', text: ''}));
-  };
 
   const handleCreateDrawer = () => {
-    handleCreate();
+    handleCreate(dispatch);
     handleClose();
   };
 
@@ -38,7 +35,8 @@ const Sidebar: FC<SidebarProps> = ({isOpen, handleClose}) => {
           </div>
           <NotesSelectList handleClose={handleClose} />
           <div className='mb-2 w-11/12 mx-auto'>
-            <CreateButton handleCreate={handleCreate} />
+            {/*{get dispatch in func?}*/}
+            <CreateButton handleCreate={() => handleCreate(dispatch)} />
           </div>
         </div>
       </>

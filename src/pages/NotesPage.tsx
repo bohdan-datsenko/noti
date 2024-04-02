@@ -7,7 +7,7 @@ import {fetchNotes} from '../modules/notes/redux/thunks';
 import {useKeyboardShortcut} from '../modules/app/hooks/useKeyboardShortcut';
 import {shortcuts} from '../modules/notes/constants/notes';
 import {SidebarComponent} from '../modules/app/components/SidebarCompoment';
-import {handleSave} from '../modules/notes/utils/notes';
+import {handleCreate, handleRemove, handleSave} from '../modules/notes/utils/notes';
 
 export const NotesPage = () => {
   const dispatch = useAppDispatch();
@@ -24,6 +24,12 @@ export const NotesPage = () => {
 
   // handle keyboard shortcuts for whole page
   useKeyboardShortcut(shortcuts.SAVE, () => handleSave(selectedNote, dispatch));
+  useKeyboardShortcut(shortcuts.CREATE, () => handleCreate(dispatch));
+  useKeyboardShortcut(shortcuts.REMOVE, () => {
+    if (selectedNote) {
+      handleRemove(selectedId, selectedNote?.isNew, dispatch)
+    }
+  });
 
   return (
     <Layout isLoading={isLoading} handleOpenMenu={() => setIsMenuOpen(true)}>
