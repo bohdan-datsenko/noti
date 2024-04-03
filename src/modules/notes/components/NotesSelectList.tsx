@@ -1,25 +1,31 @@
 import React, {FC} from 'react';
-import {NoteSelect} from './NoteSelect';
-import {useAppSelector} from '../../app';
+import {useAppDispatch, useAppSelector} from '../../app';
+import SelectWithInfo from "../../../ui/SelectWithInfo";
+import {selectNote} from "../redux/noteSlice";
 
 interface NotesSelectListProps {
   handleClose: () => void;
 }
 
 export const NotesSelectList: FC<NotesSelectListProps> = ({handleClose}) => {
+  const dispatch = useAppDispatch();
   const notes = useAppSelector((state) => state.noteReducer.notes);
   const selectedId = useAppSelector((state) => state.noteReducer.selectedId);
+
+  const handleSelect = (id: number) => {
+    dispatch(selectNote(id));
+    handleClose();
+  }
+
   return (
     <div className='overflow-hidden h-full'>
       <ul className='overflow-auto h-full'>
         {notes.map((note) => (
           <li key={note.id} className='flex justify-center'>
-            <NoteSelect id={note.id}
-                        value={note.title}
-                        isEdited={note.isEdited}
-                        isSelected={note.id === selectedId}
-                        isNew={note.isNew}
-                        handleClose={handleClose}
+            <SelectWithInfo handleClick={() => handleSelect(note.id)}
+                            value={note.title !== '' ? note.title : 'untitled'}
+                            isSelected={note.id === selectedId}
+                            isUnsaved={note.isEdited}
             />
           </li>
         ))}

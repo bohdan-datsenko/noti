@@ -6,11 +6,12 @@ import Spinner from '../ui/Spinner';
 
 interface LayoutProps {
   isLoading: boolean;
+  toolbarActions: React.ReactElement[];
   handleOpenMenu: () => void;
   children: React.ReactNode;
 }
 
-const Layout: FC<LayoutProps> = ({isLoading, handleOpenMenu, children}) => {
+const Layout: FC<LayoutProps> = ({isLoading, toolbarActions, handleOpenMenu, children}) => {
   const openBtn =
     <button onClick={handleOpenMenu} className='relative w-8 sm:hidden self-end active:scale-110
                                                 before:absolute before:block before:bg-white before:rounded before:h-0.5 before:w-full before:top-0
@@ -20,7 +21,7 @@ const Layout: FC<LayoutProps> = ({isLoading, handleOpenMenu, children}) => {
 
   return (
       <div className='flex flex-col container h-screen md:w-11/12 lg:w-3/4 mx-auto text-zinc-700'>
-        <Header actions={openBtn} />
+        <Header actions={openBtn} toolbarActions={toolbarActions} />
         {isLoading ?
           <Spinner />
           :

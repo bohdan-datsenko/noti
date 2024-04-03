@@ -48,13 +48,6 @@ const NoteForm = () => {
             <input value={title} onChange={(e) => setTitle(e.target.value)} type='text' maxLength={26} placeholder='Title...'
                    className='flex-auto text-neutral-600 text-3xl px-2 bg-transparent placeholder:text-zinc-400 border-b-2 border-zinc-300
                    focus:outline-none focus:border-amber-300 focus:bg-zinc-100' />
-            <button disabled={!note?.isEdited}
-                    type='button'
-                    onClick={() => dispatch(handleSave())}
-                    className='py- px-3 sm:px-8 uppercase text-white rounded bg-amber-300
-                              disabled:bg-amber-200 hover:bg-amber-400'>
-              Save
-            </button>
           </div>
           <textarea
             value={text}

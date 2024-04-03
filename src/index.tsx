@@ -1,6 +1,6 @@
 import React from 'react';
 import ReactDOM from 'react-dom/client';
-import {NotesPage} from './pages/NotesPage';
+import {NotesPage} from './pages/notesPage/NotesPage';
 import {Provider} from 'react-redux';
 import {setupStore} from "./modules/app";
 

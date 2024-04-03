@@ -1,7 +1,7 @@
 import {createAsyncThunk} from '@reduxjs/toolkit';
 import {NotesAPI} from '../api/NotesAPI';
 import {INote} from '../types/notes';
-import {addDraftNote, removeDraftNote} from "./noteSlice";
+import {addDraftNote, removeDraftNote, selectNote} from "./noteSlice";
 import {createAppAsyncThunk} from "../../app/hooks/redux";
 
 export const fetchNotes = createAsyncThunk(
@@ -109,5 +109,7 @@ export const handleRemove = createAppAsyncThunk(
   } else {
     dispatch(removeDraftNote(selectedNote.id));
   }
-});
+
+  dispatch(selectNote(-1));
+  });
 
