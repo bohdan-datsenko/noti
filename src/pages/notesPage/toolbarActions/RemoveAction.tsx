@@ -11,7 +11,11 @@ const RemoveAction = () => {
   const selectedId = useAppSelector((state) => state.noteReducer.selectedId);
 
   return (
-    <ToolbarAction handleClick={() => dispatch(handleRemove())} tooltipMsg={'Shortcut: Ctrl + S'} color={colors.DELETE} disabled={selectedId === -1}>
+    <ToolbarAction handleClick={() => dispatch(handleRemove())}
+                   tooltipMsg={'Shortcut: Ctrl + S'}
+                   color={colors.DELETE}
+                   disabled={selectedId === -1}
+    >
       <BiTrash size={22} />
     </ToolbarAction>
   );

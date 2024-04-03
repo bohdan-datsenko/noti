@@ -14,7 +14,7 @@ export const NotesSelectList: FC<NotesSelectListProps> = ({handleClose}) => {
 
   const handleSelect = (id: number) => {
     dispatch(selectNote(id));
-    handleClose();
+    handleClose(); // todo
   }
 
   return (

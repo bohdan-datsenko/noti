@@ -1,7 +1,6 @@
 import React, {FC} from 'react';
 import {Drawer} from "./Drawer";
 import {NotesSelectList} from '../modules/notes/components/NotesSelectList';
-import {useAppDispatch} from '../modules/app';
 
 interface SidebarProps {
     isOpen: boolean;
@@ -9,8 +8,6 @@ interface SidebarProps {
 }
 
 const Sidebar: FC<SidebarProps> = ({isOpen, handleClose}) => {
-  const dispatch = useAppDispatch();
-
   return (
       <>
         <Drawer
