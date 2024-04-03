@@ -9,4 +9,4 @@ export {
   useAppSelector,
 };
 
-export type {AppDispatch} from './redux/store';
+export type {AppDispatch, RootState} from './redux/store';

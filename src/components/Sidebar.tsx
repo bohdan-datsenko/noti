@@ -3,7 +3,8 @@ import {Drawer} from "./Drawer";
 import {NotesSelectList} from '../modules/notes/components/NotesSelectList';
 import {useAppDispatch} from '../modules/app';
 import {CreateButton} from "../modules/notes/components/CreateButton";
-import {handleCreate} from "../modules/notes/utils/notes";
+import PrimaryButton from "../ui/PrimaryButton";
+import {handleAddDraft, handleRemove} from "../modules/notes";
 
 interface SidebarProps {
     isOpen: boolean;
@@ -14,14 +15,19 @@ const Sidebar: FC<SidebarProps> = ({isOpen, handleClose}) => {
   const dispatch = useAppDispatch();
 
   const handleCreateDrawer = () => {
-    handleCreate(dispatch);
+    dispatch(handleAddDraft());
     handleClose();
   };
+
+  const actions = [
+    <CreateButton handleCreate={handleCreateDrawer} />,
+    <PrimaryButton handleClick={() => dispatch(handleRemove())}>Delete</PrimaryButton>
+  ]
 
   return (
       <>
         <Drawer
-          actions={[<CreateButton handleCreate={handleCreateDrawer} />]}
+          actions={actions}
           isOpen={isOpen} handleClose={handleClose}
         >
           <NotesSelectList handleClose={handleClose} />
@@ -36,7 +42,7 @@ const Sidebar: FC<SidebarProps> = ({isOpen, handleClose}) => {
           <NotesSelectList handleClose={handleClose} />
           <div className='mb-2 w-11/12 mx-auto'>
             {/*{get dispatch in func?}*/}
-            <CreateButton handleCreate={() => handleCreate(dispatch)} />
+            <CreateButton handleCreate={() => dispatch(handleAddDraft())} />
           </div>
         </div>
       </>

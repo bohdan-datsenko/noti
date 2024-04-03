@@ -3,7 +3,7 @@ import {BiSolidTrash} from 'react-icons/bi';
 import SelectWithIcon from '../../../ui/SelectWithIcon';
 import {selectNote} from '../redux/noteSlice';
 import {useAppDispatch} from '../../app';
-import {handleRemove} from "../utils/notes";
+import {handleRemove} from "../redux/thunks";
 
 interface SelectIconButtonProps {
   id: number;
@@ -30,8 +30,6 @@ export const NoteSelect: FC<SelectIconButtonProps> = (
     handleClose();
   }
 
-  const handleRemoveNote = (e: React.MouseEvent<HTMLButtonElement>) => handleRemove(id, isNew, dispatch, e)
-
   return (
     <SelectWithIcon id={id}
                     handleClick={handleSelect}
@@ -39,7 +37,7 @@ export const NoteSelect: FC<SelectIconButtonProps> = (
                     isSelected={isSelected}
                     isUnsaved={isEdited}
                     secondaryButton={{
-                      handleClick: handleRemoveNote
+                      handleClick: () => dispatch(handleRemove())
                     }}
     >
       {/*todo does it hurt bundle size?*/}

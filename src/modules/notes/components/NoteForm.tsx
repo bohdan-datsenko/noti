@@ -1,7 +1,7 @@
 import React, {useEffect, useState} from 'react';
 import {useAppDispatch, useAppSelector} from '../../app';
 import {updateDraftNote} from '../redux/noteSlice';
-import {handleSave} from '../utils/notes';
+import {handleSave} from '../redux/thunks';
 
 const NoteForm = () => {
   const dispatch = useAppDispatch();
@@ -50,8 +50,8 @@ const NoteForm = () => {
                    focus:outline-none focus:border-amber-300 focus:bg-zinc-100' />
             <button disabled={!note?.isEdited}
                     type='button'
-                    onClick={() => handleSave(note, dispatch)}
-                    className='py-2 px-3 sm:px-8 uppercase text-white rounded bg-amber-300
+                    onClick={() => dispatch(handleSave())}
+                    className='py- px-3 sm:px-8 uppercase text-white rounded bg-amber-300
                               disabled:bg-amber-200 hover:bg-amber-400'>
               Save
             </button>
