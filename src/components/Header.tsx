@@ -1,5 +1,5 @@
 import React, {FC, ReactNode} from 'react';
-import Toolbar from "./toolbar/Toolbar";
+import Toolbar from './toolbar/index';
 
 interface HeaderProps {
   actions: ReactNode;

@@ -1,10 +1,10 @@
 import React, {useEffect, useState} from 'react';
 import Layout from "../../components/Layout";
-import NoteForm from "../../modules/notes/components/NoteForm";
+import NoteForm from "../../modules/notes";
 import {useAppDispatch, useAppSelector} from '../../modules/app';
-import {fetchNotes} from '../../modules/notes/redux/thunks';
-import {useKeyboardShortcut} from '../../modules/app/hooks/useKeyboardShortcut';
-import {shortcuts} from '../../modules/notes/constants/notes';
+import {fetchNotes} from '../../modules/notes';
+import {useKeyboardShortcut} from '../../modules/app';
+import {shortcuts} from '../../modules/notes';
 import {SidebarComponent} from '../../modules/app/components/SidebarCompoment';
 import {handleAddDraft, handleRemove, handleSave} from '../../modules/notes';
 import CreateAction from "./toolbarActions/CreateAction";
