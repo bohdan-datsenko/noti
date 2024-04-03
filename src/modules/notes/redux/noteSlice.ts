@@ -7,7 +7,7 @@ import {ActionWithMetadata} from '../../app/types/types';
 const notesSlice = createSlice({
   name: 'notes',
   initialState: {
-    selectedId: 0,
+    selectedId: -1,
     notes: [] as IDraftNote[],
     isLoading: false,
     isError: false,
