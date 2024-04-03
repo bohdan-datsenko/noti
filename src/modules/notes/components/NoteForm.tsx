@@ -5,7 +5,8 @@ import {updateDraftNote} from '../redux/noteSlice';
 const NoteForm = () => {
   const dispatch = useAppDispatch();
   const selectedNoteId = useAppSelector(state => state.noteReducer.selectedId);
-  const note = useAppSelector(state => state.noteReducer.notes.find((n) => n.id === selectedNoteId)); // todo;
+  const note = useAppSelector(state =>
+    state.noteReducer.notes.find((n) => n.id === selectedNoteId)); // todo;
 
   const initTitle = note?.isEdited ? note.newTitle : note?.title;
   const initText = note?.isEdited ? note.newText : note?.text;
