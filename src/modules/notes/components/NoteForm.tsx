@@ -1,7 +1,6 @@
 import React, {useEffect, useState} from 'react';
 import {useAppDispatch, useAppSelector} from '../../app';
 import {updateDraftNote} from '../redux/noteSlice';
-import {handleSave} from '../redux/thunks';
 
 const NoteForm = () => {
   const dispatch = useAppDispatch();
