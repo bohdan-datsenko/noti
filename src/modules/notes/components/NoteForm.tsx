@@ -1,6 +1,6 @@
 import React, {useEffect, useState} from 'react';
 import {useAppDispatch, useAppSelector} from '../../app';
-import {updateDraftNote} from '../redux/noteSlice';
+import {handleUpdateDraft} from "../redux/thunks";
 
 const NoteForm = () => {
   const dispatch = useAppDispatch();
@@ -22,21 +22,8 @@ const NoteForm = () => {
 
 
   useEffect(() => {
-    if (note === undefined) {
-      return;
-    }
-
-    const isEditSame = note.title === title
-      && note.text === text;
-    const isNoteNotEdited = note.title === title
-      && note.text === text;
-
-    const isDataEqual = isEditSame || isNoteNotEdited;
-
-    if (isDataEqual && !note.isNew) {
-      dispatch(updateDraftNote({...note, newTitle: title, newText: text, isEdited: false}))
-    } else {
-      dispatch(updateDraftNote({...note, isEdited: true, newTitle: title, newText: text}));
+    if (note !== undefined) {
+      dispatch(handleUpdateDraft({title, text}));
     }
   }, [title, text]); // TODO check dep array
 

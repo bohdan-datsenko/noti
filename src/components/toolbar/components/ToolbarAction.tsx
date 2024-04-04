@@ -1,9 +1,7 @@
 import React, {FC} from 'react';
 import {Tooltip} from "../../../ui/Tooltip";
 import {IconButton} from "../../../ui/IconButton";
-import {handleSave} from "../../../modules/notes";
 import {ColorsUtils} from "../../../modules/app/utils/utils";
-import {useAppDispatch} from "../../../modules/app";
 import colors = ColorsUtils.colors;
 
 interface ToolbarActionProps {
@@ -20,8 +18,6 @@ const ToolbarAction: FC<ToolbarActionProps> = ({children,
                                                  color = colors.PRIMARY,
                                                  disabled = false
 }) => {
-  const dispatch = useAppDispatch();
-
   return (
     <Tooltip message={tooltipMsg}>
       <IconButton

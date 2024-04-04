@@ -1,10 +1,9 @@
-import {createAsyncThunk} from '@reduxjs/toolkit';
 import {NotesAPI} from '../api/NotesAPI';
 import {INote} from '../types/notes';
-import {addDraftNote, removeDraftNote, selectNote} from "./noteSlice";
+import {addDraftNote, removeDraftNote, selectNote, updateDraftNote} from "./noteSlice";
 import {createAppAsyncThunk} from "../../app/hooks/redux";
 
-export const fetchNotes = createAsyncThunk(
+export const fetchNotes = createAppAsyncThunk(
   'notes/fetchNotes',
   async () => {
     try {
@@ -20,7 +19,7 @@ export const fetchNotes = createAsyncThunk(
   }
 );
 
-export const updateNoteById = createAsyncThunk(
+export const updateNoteById = createAppAsyncThunk(
   'notes/updateNoteById',
   async (note: INote) => {
     try {
@@ -28,14 +27,14 @@ export const updateNoteById = createAsyncThunk(
       if (status === 200) {
         return note.id;
       }
-      throw Error; // TODO
+      throw Error('Failed to update note with id: ' + note.id); // TODO
     } catch (err) {
       throw err;
     }
   }
 );
 
-export const removeNoteById = createAsyncThunk(
+export const removeNoteById = createAppAsyncThunk(
   'notes/removeNoteById',
   async (id: number) => {
     try {
@@ -47,7 +46,7 @@ export const removeNoteById = createAsyncThunk(
   }
 );
 
-export const createNote = createAsyncThunk(
+export const createNote = createAppAsyncThunk(
   'notes/createNote',
   async (note: INote) => {
     try {
@@ -55,7 +54,7 @@ export const createNote = createAsyncThunk(
       if (status === 201) {
         return data.id;
       }
-      throw Error; // TODO
+      throw Error('Failed to create note'); // TODO
     } catch (err) {
       throw err;
     }
@@ -112,4 +111,28 @@ export const handleRemove = createAppAsyncThunk(
 
   dispatch(selectNote(-1));
   });
+
+interface HandleUpdateDraftProps {
+  title: string;
+  text: string;
+}
+
+export const handleUpdateDraft = createAppAsyncThunk(
+  'notes/updateDraft',
+  (data: HandleUpdateDraftProps, {dispatch, getState}) => {
+    const selectedId = getState().noteReducer.selectedId;
+    const note = getState().noteReducer.notes.find((n) => n.id === selectedId)!; // todo
+    const isEditSame = note.title === data.title
+      && note.text === data.text;
+    const isNoteNotEdited = note.title === data.title
+      && note.text === data.text;
+
+    const isDataEqual = isEditSame || isNoteNotEdited;
+
+    if (isDataEqual && !note.isNew) {
+      dispatch(updateDraftNote({...note, newTitle: data.title, newText: data.text, isEdited: false}))
+    } else {
+      dispatch(updateDraftNote({...note, isEdited: true, newTitle: data.title, newText: data.text}));
+    }
+});
 

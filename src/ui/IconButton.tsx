@@ -19,6 +19,7 @@ export const IconButton: FC<IconButton> = ({
   const colorPalette = calculateColor(color);
   const classes = 'rounded p-1 text-white transition-colors enabled:hover:scale-105 enabled:active:scale-110'
     + ` ${colorPalette.color} ${colorPalette.hover} ${colorPalette.disabled}`;
+
   return (
     <button disabled={disabled} onClick={handleClick} className={classes}>
       {children}
