@@ -16,6 +16,7 @@ const Sidebar: FC<SidebarProps> = ({isOpen, handleClose}) => {
         >
           <NotesSelectList handleClose={handleClose} />
         </Drawer>
+
         <div className='hidden overflow-hidden sm:flex sm:flex-col border-r-2 border-zinc-300 bg-zinc-50'>
           <div className='p-2'>
             <div className='flex justify-between items-center'>

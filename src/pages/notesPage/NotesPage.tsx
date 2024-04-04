@@ -1,15 +1,15 @@
-import React, {useEffect, useState} from 'react';
+import React, {useEffect, useMemo, useState} from 'react';
 import Layout from "../../components/Layout";
 import NoteForm from "../../modules/notes";
 import {useAppDispatch, useAppSelector} from '../../modules/app';
 import {fetchNotes} from '../../modules/notes';
 import {useKeyboardShortcut} from '../../modules/app';
 import {shortcuts} from '../../modules/notes';
-import {SidebarComponent} from '../../modules/app/components/SidebarCompoment';
 import {handleAddDraft, handleRemove, handleSave} from '../../modules/notes';
-import CreateAction from "./toolbarActions/CreateAction";
-import SaveAction from "./toolbarActions/SaveAction";
-import RemoveAction from "./toolbarActions/RemoveAction";
+import CreateAction from './toolbarActions/CreateAction';
+import SaveAction from './toolbarActions/SaveAction';
+import RemoveAction from './toolbarActions/RemoveAction';
+import Sidebar from '../../components/Sidebar';
 
 export const NotesPage = () => {
   const dispatch = useAppDispatch();
@@ -26,14 +26,18 @@ export const NotesPage = () => {
   useKeyboardShortcut(shortcuts.CREATE, () => dispatch(handleAddDraft()));
   useKeyboardShortcut(shortcuts.REMOVE,  () => dispatch(handleRemove()));
 
+  const actions = useMemo(() => [
+    <CreateAction />, <SaveAction />, <RemoveAction />
+  ], []);
+
   return (
     <Layout isLoading={isLoading}
             handleOpenMenu={() => setIsMenuOpen(true)}
-            toolbarActions={[<CreateAction />, <SaveAction />, <RemoveAction />]}
+            toolbarActions={actions}
     >
-      <SidebarComponent
-        isMenuOpen={isMenuOpen}
-        handleCloseMenu={() => setIsMenuOpen(false)}
+      <Sidebar
+        isOpen={isMenuOpen}
+        handleClose={() => setIsMenuOpen(false)}
       />
       <NoteForm />
     </Layout>
