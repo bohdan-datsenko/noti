@@ -2,14 +2,14 @@ import React, {FC} from 'react';
 import {calculateColor, colors} from "../modules/app";
 
 // TODO not reusable
-interface IconButton {
+interface IconButtonProps {
   handleClick: (e: React.MouseEvent<HTMLButtonElement>) => void;
   children: React.ReactElement;
   disabled?: boolean;
   color?: colors;
 }
 
-export const IconButton: FC<IconButton> = ({
+export const IconButton: FC<IconButtonProps> = ({
                                              handleClick,
                                              children,
                                              disabled = false,
