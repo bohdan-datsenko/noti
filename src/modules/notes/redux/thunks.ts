@@ -2,67 +2,66 @@ import {NotesAPI} from '../api/NotesAPI';
 import {INote} from '../types/notes';
 import {addDraftNote, removeDraftNote, selectNote, updateDraftNote} from "./noteSlice";
 import {createAppAsyncThunk} from "../../app/hooks/redux";
+import {handleError} from "../../app/utils/utils"; // todo
 
 export const fetchNotes = createAppAsyncThunk(
   'notes/fetchNotes',
-  async () => {
+  async (_, {dispatch}) => {
     try {
       const {data, status} = await NotesAPI.fetchAll();
       if(status === 200) {
         return data;
       }
     } catch (err) {
-      throw err;
+      dispatch(handleError( {path: 'notes/fetchNotes', message: 'Failed to fetch notes'}));
     }
 
-    return [];
+    return []; // TODO
   }
 );
 
 export const updateNoteById = createAppAsyncThunk(
   'notes/updateNoteById',
-  async (note: INote) => {
+  async (note: INote, {dispatch}) => {
     try {
       const {status} = await NotesAPI.updateById(note);
       if (status === 200) {
         return note.id;
       }
-      throw Error('Failed to update note with id: ' + note.id); // TODO
     } catch (err) {
-      throw err;
+      dispatch(handleError({path: 'notes/updateNoteById', message: `Failed to update note with id: ${note.id}`}));
     }
   }
 );
 
 export const removeNoteById = createAppAsyncThunk(
   'notes/removeNoteById',
-  async (id: number) => {
+  async (id: number, {dispatch}) => {
     try {
       const {status} = await NotesAPI.removeNoteById(id);
       return status;
     } catch (err) {
-      throw err;
+      dispatch(handleError({path: 'notes/removeNoteById', message: `Failed to remove note with id: ${id}`}));
     }
   }
 );
 
 export const createNote = createAppAsyncThunk(
   'notes/createNote',
-  async (note: INote) => {
+  async (note: INote, {dispatch}) => {
     try {
       const {data, status} = await NotesAPI.createNote(note.title, note.text);
       if (status === 201) {
         return data.id;
       }
-      throw Error('Failed to create note'); // TODO
     } catch (err) {
-      throw err;
+      dispatch(handleError({path: 'notes/createNote', message: 'Failed to create note'}));
     }
   }
 );
 
 export const handleSave = createAppAsyncThunk(
-  'notes/save',
+  'notes/handleSave',
   async (_, {dispatch, getState}) => {
     const selectedId = getState().noteReducer.selectedId;
     const note = getState().noteReducer.notes.find(note => note.id === selectedId);
@@ -112,7 +111,7 @@ export const handleRemove = createAppAsyncThunk(
   dispatch(selectNote(-1));
   });
 
-interface HandleUpdateDraftProps {
+interface HandleUpdateDraftProps { // todo
   title: string;
   text: string;
 }

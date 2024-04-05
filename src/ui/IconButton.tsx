@@ -14,8 +14,8 @@ export const IconButton: FC<IconButtonProps> = ({
                                              children,
                                              disabled = false,
                                              color = colors.PRIMARY}) => {
-  const colorPalette = calculateColor(color);
-  const classes = 'rounded p-1 text-white transition-colors enabled:hover:scale-105 enabled:active:scale-110'
+  const colorPalette = calculateColor(color)!; // todo
+  const classes = 'rounded p-1 text-white transition-all enabled:hover:scale-105 enabled:active:scale-110'
     + ` ${colorPalette.color} ${colorPalette.hover} ${colorPalette.disabled}`;
 
   return (

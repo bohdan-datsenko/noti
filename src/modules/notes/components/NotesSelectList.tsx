@@ -1,7 +1,8 @@
-import React, {FC} from 'react';
+import React, {FC, useEffect} from 'react';
 import {useAppDispatch, useAppSelector} from '../../app';
 import SelectWithInfo from "../../../ui/SelectWithInfo";
 import {selectNote} from "../redux/noteSlice";
+import {shallowEqual} from "react-redux";
 
 interface NotesSelectListProps {
   handleClose: () => void;
@@ -9,8 +10,7 @@ interface NotesSelectListProps {
 
 export const NotesSelectList: FC<NotesSelectListProps> = ({handleClose}) => {
   const dispatch = useAppDispatch();
-  const notes = useAppSelector((state) => state.noteReducer.notes);
-  const selectedId = useAppSelector((state) => state.noteReducer.selectedId);
+  const notes = useAppSelector((state) => state.noteReducer.notes, shallowEqual);
 
   const handleSelect = (id: number) => {
     dispatch(selectNote(id));
@@ -22,9 +22,9 @@ export const NotesSelectList: FC<NotesSelectListProps> = ({handleClose}) => {
       <ul className='overflow-auto h-full'>
         {notes.map((note) => (
           <li key={note.id} className='flex justify-center'>
-            <SelectWithInfo handleClick={() => handleSelect(note.id)}
+            <SelectWithInfo id={note.id}
+                            handleClick={() => handleSelect(note.id)}
                             value={note.title !== '' ? note.title : 'untitled'}
-                            isSelected={note.id === selectedId}
                             isUnsaved={note.isEdited}
             />
           </li>

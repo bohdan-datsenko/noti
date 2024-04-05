@@ -1,16 +1,16 @@
 import axios from 'axios';
 import {INote} from '../types/notes';
 
-const BASE_URL = 'http://localhost:3001';
+const BASE_URL = 'http://loc2alhost:3001';
 
 class NotesAPI {
   static async fetchAll() {
     try {
-      const {data, status} = await axios.get<INote[]>(`${BASE_URL}/notes`);
+      const {data, status} = await axios.get<INote[]>(`${BASE_URL}/notes/`);
 
       return {data, status};
-    } catch (err) {
-      throw new Error('error');
+    } catch (err: any) {
+      throw new Error('Failed to fetch notes' + err.message);
     }
   }
 

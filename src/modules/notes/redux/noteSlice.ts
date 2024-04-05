@@ -2,7 +2,7 @@ import {createSlice, PayloadAction} from '@reduxjs/toolkit';
 import {IDraftNote, INote} from '../types/notes';
 import {createNote, fetchNotes, updateNoteById} from './thunks';
 import {notesMatchers} from './matchers';
-import {ActionWithMetadata} from '../../app/types/types';
+import {ActionWithMetadata} from '../../app';
 
 const notesSlice = createSlice({
   name: 'notes',
@@ -10,7 +10,7 @@ const notesSlice = createSlice({
     selectedId: -1,
     notes: [] as IDraftNote[],
     isLoading: false,
-    isError: false,
+    error: null,
   },
   reducers: {
     selectNote: (state, action: PayloadAction<number>) => {
@@ -47,15 +47,21 @@ const notesSlice = createSlice({
         state.notes = [...fetchedNotes, ...draftNotes.filter((draftNote) => !fetchedNotesIds.includes(draftNote.id))];
       })
       .addCase(createNote.fulfilled, (state, action) => {
-        state.selectedId = action.payload;
+        state.selectedId = action.payload!; // todo
       })
       .addCase(updateNoteById.fulfilled, (state, action) => {
         state.notes = state.notes.filter(({id}) => id !== action.payload);
-        state.selectedId = action.payload;
+        state.selectedId = action.payload!; // todo
       })
       .addMatcher(notesMatchers, (state, action: ActionWithMetadata) => {
+        const isError = action.meta.requestStatus === 'rejected';
         state.isLoading = action.meta.requestStatus === 'pending';
-        state.isError = action.meta.requestStatus === 'rejected';
+
+        if (isError) {
+          state.error = action.error;
+        } else {
+          state.error = null;
+        }
       })
   }
 });

@@ -11,7 +11,7 @@ const RemoveAction = () => {
   return (
     <ToolbarAction handleClick={() => dispatch(handleRemove())}
                    tooltipMsg={'Shortcut: Ctrl + S'}
-                   color={colors.DELETE}
+                   color={colors.ERROR}
                    disabled={selectedId === -1}
     >
       <BiTrash size={22} />

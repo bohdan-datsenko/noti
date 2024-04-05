@@ -1,16 +1,19 @@
 import React, {FC} from 'react';
 import {Tooltip} from './Tooltip';
+import {useAppSelector} from "../modules/app";
 
 interface IconButtonProps {
+  id: number;
   handleClick: () => void;
   value: string;
-  isSelected?: boolean;
   isUnsaved?: boolean;
 }
 
-const SelectWithInfo: FC<IconButtonProps> = ({value, isSelected, isUnsaved, handleClick}) => {
+const SelectWithInfo: FC<IconButtonProps> = ({id, value, isUnsaved, handleClick}) => {
+  const selectedId = useAppSelector((state) => state.noteReducer.selectedId);
+
   let buttonClasses = 'group w-11/12 flex justify-between gap-1 px-4 py-2 rounded border-b transition-colors cursor-pointer select-none hover:bg-zinc-300';
-  if (isSelected) {
+  if (id === selectedId) {
     buttonClasses += ' bg-zinc-200';
   }
 

@@ -14,10 +14,11 @@ import Sidebar from '../../components/Sidebar';
 export const NotesPage = () => {
   const dispatch = useAppDispatch();
   const isLoading = useAppSelector(state => state.noteReducer.isLoading);
+  const error = useAppSelector(state => state.noteReducer.error);
 
   useEffect(() => {
     dispatch(fetchNotes());
-  }, [dispatch]);
+  }, []);
 
   const [isMenuOpen, setIsMenuOpen] = useState(false);
 
