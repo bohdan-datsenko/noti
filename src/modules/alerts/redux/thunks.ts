@@ -17,7 +17,7 @@ export const generateAlert = createAppAsyncThunk(
         id: data.id ?? 'default',
         time: 3000,
         message: data.message,
-        severity: Severity.INFO
+        severity: data.severity
       })
     );
   }
