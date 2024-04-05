@@ -36,6 +36,6 @@ interface HandleErrorPayload {
 export const handleError = createAppAsyncThunk(
   'handleError',
   (data: HandleErrorPayload, {dispatch}) => {
-    dispatch(generateAlert({id: data.path, time: 100000, message: data.message, severity: Severity.ERROR}));
+    dispatch(generateAlert({id: data.path, time: 5000, message: data.message, severity: Severity.ERROR}));
   }
 );

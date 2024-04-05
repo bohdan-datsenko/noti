@@ -2,7 +2,7 @@ import {NotesAPI} from '../api/NotesAPI';
 import {INote} from '../types/notes';
 import {addDraftNote, removeDraftNote, selectNote, updateDraftNote} from "./noteSlice";
 import {createAppAsyncThunk} from "../../app/hooks/redux";
-import {handleError} from "../../app/utils/utils"; // todo
+import {handleError} from "../../app/utils/utils";
 
 export const fetchNotes = createAppAsyncThunk(
   'notes/fetchNotes',
@@ -40,8 +40,8 @@ export const removeNoteById = createAppAsyncThunk(
     try {
       const {status} = await NotesAPI.removeNoteById(id);
       return status;
-    } catch (err) {
-      dispatch(handleError({path: 'notes/removeNoteById', message: `Failed to remove note with id: ${id}`}));
+    } catch (err: any) {
+      dispatch(handleError({path: 'notes/removeNoteById', message: err.message}));
     }
   }
 );
@@ -54,8 +54,8 @@ export const createNote = createAppAsyncThunk(
       if (status === 201) {
         return data.id;
       }
-    } catch (err) {
-      dispatch(handleError({path: 'notes/createNote', message: 'Failed to create note'}));
+    } catch (err: any) {
+      dispatch(handleError({path: 'notes/removeNoteById', message: err.message}));
     }
   }
 );

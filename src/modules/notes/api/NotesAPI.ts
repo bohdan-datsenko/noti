@@ -10,10 +10,11 @@ class NotesAPI {
 
       return {data, status};
     } catch (err: any) {
-      throw new Error('Failed to fetch notes' + err.message);
+      throw new Error('Failed to fetch notes: ' + err.message);
     }
   }
 
+  // todo remove any
   static async updateById(note: INote) {
     try {
       const {data, status} = await axios.patch<INote>(
@@ -21,8 +22,8 @@ class NotesAPI {
         { ...note }
       );
       return {data, status};
-    } catch (err) {
-      throw new Error('error');
+    } catch (err: any) {
+      throw new Error(`Failed to update note with id ${note.id}: ` + err.message);
     }
   }
 
@@ -33,8 +34,8 @@ class NotesAPI {
         { title, text }
       );
       return {data, status};
-    } catch (err) {
-      throw new Error('error');
+    } catch (err: any) {
+      throw new Error('Failed to create note: ' + err.message);
     }
   }
 
@@ -44,8 +45,8 @@ class NotesAPI {
         `${BASE_URL}/notes/${id}`,
       );
       return {data, status};
-    } catch (err) {
-      throw new Error('error');
+    } catch (err: any) {
+      throw new Error(`Failed to remove note with id ${id}: ` + err.message);
     }
   }
 }

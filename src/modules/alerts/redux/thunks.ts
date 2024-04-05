@@ -15,7 +15,7 @@ export const generateAlert = createAppAsyncThunk(
     dispatch(
       addAlert({
         id: data.id ?? 'default',
-        time: 3000,
+        time: data.time ?? 3000,
         message: data.message,
         severity: data.severity
       })

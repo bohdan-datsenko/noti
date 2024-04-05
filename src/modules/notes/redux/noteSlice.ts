@@ -4,14 +4,24 @@ import {createNote, fetchNotes, updateNoteById} from './thunks';
 import {notesMatchers} from './matchers';
 import {ActionWithMetadata} from '../../app';
 
+// todo
+interface NotesState {
+  selectedId: number;
+  notes: IDraftNote[];
+  isLoading: boolean;
+  error: { message: string } | null;
+}
+
+const initialState: NotesState = {
+  selectedId: -1,
+  notes: [],
+  isLoading: false,
+  error: null,
+};
+
 const notesSlice = createSlice({
   name: 'notes',
-  initialState: {
-    selectedId: -1,
-    notes: [] as IDraftNote[],
-    isLoading: false,
-    error: null,
-  },
+  initialState: initialState,
   reducers: {
     selectNote: (state, action: PayloadAction<number>) => {
       state.selectedId = action.payload;
