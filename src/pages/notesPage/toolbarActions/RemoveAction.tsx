@@ -1,10 +1,8 @@
 import React from 'react';
-import {useAppDispatch, useAppSelector} from "../../../modules/app";
+import {colors, useAppDispatch, useAppSelector} from "../../../modules/app";
 import ToolbarAction from "../../../components/toolbar/components/ToolbarAction";
 import {handleRemove} from "../../../modules/notes";
 import {BiTrash} from "react-icons/bi";
-import {ColorsUtils} from "../../../modules/app/utils/utils";
-import colors = ColorsUtils.colors;
 
 const RemoveAction = () => {
   const dispatch = useAppDispatch();
