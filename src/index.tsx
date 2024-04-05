@@ -3,9 +3,10 @@ import ReactDOM from 'react-dom/client';
 import {NotesPage} from './pages/notesPage/NotesPage';
 import {Provider} from 'react-redux';
 import {setupStore} from "./modules/app";
+import AlertProvider from "./modules/alerts";
+import ErrorBoundary from "./modules/errorBoundary/ErrorBoundary";
 
 import './main.css';
-import AlertProvider from "./modules/alerts";
 
 const store = setupStore();
 const root = ReactDOM.createRoot(
@@ -15,7 +16,9 @@ const root = ReactDOM.createRoot(
 root.render(
   <React.StrictMode>
     <Provider store={store}>
-      <NotesPage />
+      <ErrorBoundary>
+        <NotesPage />
+      </ErrorBoundary>
       <AlertProvider />
     </Provider>
   </React.StrictMode>

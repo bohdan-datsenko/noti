@@ -3,6 +3,7 @@ import Header from "./Header";
 import Main from "./Main";
 import Footer from "./Footer";
 import Spinner from '../ui/Spinner';
+import Wrapper from "./Wrapper";
 
 interface LayoutProps {
   isLoading: boolean;
@@ -20,7 +21,7 @@ const Layout: FC<LayoutProps> = ({isLoading, toolbarActions, handleOpenMenu, chi
     </button>
 
   return (
-      <div className='flex flex-col container h-screen md:w-11/12 lg:w-3/4 mx-auto text-zinc-700'>
+      <Wrapper>
         <Header actions={openBtn} toolbarActions={toolbarActions} />
         {isLoading ?
           <Spinner />
@@ -29,8 +30,8 @@ const Layout: FC<LayoutProps> = ({isLoading, toolbarActions, handleOpenMenu, chi
             {children}
           </Main>
         }
-        <Footer />
-      </div>
+          <Footer />
+      </Wrapper>
   );
 };
 
