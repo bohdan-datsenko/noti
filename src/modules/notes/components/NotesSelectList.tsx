@@ -1,8 +1,8 @@
-import React, {FC, useEffect} from 'react';
+import React, {FC} from 'react';
 import {useAppDispatch, useAppSelector} from '../../app';
-import SelectWithInfo from "../../../ui/SelectWithInfo";
-import {selectNote} from "../redux/noteSlice";
-import {shallowEqual} from "react-redux";
+import SelectWithInfo from '../../../ui/SelectWithInfo';
+import {selectNote} from '../redux/noteSlice';
+import {shallowEqual} from 'react-redux';
 
 interface NotesSelectListProps {
   handleClose: () => void;

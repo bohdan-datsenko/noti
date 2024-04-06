@@ -1,5 +1,5 @@
 import React, {FC} from 'react';
-import {Drawer} from "./Drawer";
+import {Drawer} from './Drawer';
 import {NotesSelectList} from '../modules/notes/components/NotesSelectList';
 
 interface SidebarProps {

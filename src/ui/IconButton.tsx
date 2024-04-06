@@ -1,5 +1,5 @@
 import React, {FC} from 'react';
-import {calculateColor, colors} from "../modules/app";
+import {calculateColor, colors} from '../modules/app';
 
 // TODO not reusable
 interface IconButtonProps {

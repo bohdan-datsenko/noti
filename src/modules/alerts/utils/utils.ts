@@ -1,4 +1,4 @@
-import {exhaustiveCheck} from "../../app/utils/utils";
+import {exhaustiveCheck} from '../../app/utils/utils';
 
 export enum Severity {
   INFO = 'INFO',

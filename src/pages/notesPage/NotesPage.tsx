@@ -1,6 +1,6 @@
 import React, {useEffect, useMemo, useState} from 'react';
-import Layout from "../../components/Layout";
-import NoteForm from "../../modules/notes";
+import Layout from '../../components/Layout';
+import NoteForm from '../../modules/notes';
 import {useAppDispatch, useAppSelector} from '../../modules/app';
 import {fetchNotes} from '../../modules/notes';
 import {useKeyboardShortcut} from '../../modules/app';

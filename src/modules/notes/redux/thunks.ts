@@ -1,8 +1,8 @@
 import {NotesAPI} from '../api/NotesAPI';
 import {INote} from '../types/notes';
-import {addDraftNote, removeDraftNote, selectNote, updateDraftNote} from "./noteSlice";
-import {createAppAsyncThunk} from "../../app/hooks/redux";
-import {handleError} from "../../app/utils/utils";
+import {addDraftNote, removeDraftNote, selectNote, updateDraftNote} from './noteSlice';
+import {createAppAsyncThunk} from '../../app/hooks/redux';
+import {handleError} from '../../app/utils/utils';
 
 export const fetchNotes = createAppAsyncThunk(
   'notes/fetchNotes',

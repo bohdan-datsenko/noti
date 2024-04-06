@@ -1,6 +1,6 @@
 import React, {useEffect, useState} from 'react';
 import {useAppDispatch, useAppSelector} from '../../app';
-import {handleUpdateDraft} from "../redux/thunks";
+import {handleUpdateDraft} from '../redux/thunks';
 
 const NoteForm = () => {
   const dispatch = useAppDispatch();
@@ -39,7 +39,7 @@ const NoteForm = () => {
           <textarea
             value={text}
             onChange={(e) => setText(e.target.value)}
-            name="noteText"
+            name='noteText'
             id='noteText'
             maxLength={15000}
             placeholder='Start typing...'

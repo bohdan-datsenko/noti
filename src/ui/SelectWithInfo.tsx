@@ -1,6 +1,6 @@
 import React, {FC} from 'react';
 import {Tooltip} from './Tooltip';
-import {useAppSelector} from "../modules/app";
+import {useAppSelector} from '../modules/app';
 
 interface IconButtonProps {
   id: number;

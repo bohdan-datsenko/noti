@@ -1,8 +1,8 @@
 import React from 'react';
-import {useAppDispatch, useAppSelector} from "../../../modules/app";
-import ToolbarAction from "../../../components/toolbar/components/ToolbarAction";
-import {handleSave} from "../../../modules/notes";
-import {BiSave} from "react-icons/bi";
+import {useAppDispatch, useAppSelector} from '../../../modules/app';
+import ToolbarAction from '../../../components/toolbar/components/ToolbarAction';
+import {handleSave} from '../../../modules/notes';
+import {BiSave} from 'react-icons/bi';
 
 const SaveAction = () => {
   const dispatch = useAppDispatch();

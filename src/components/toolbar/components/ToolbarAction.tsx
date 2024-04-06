@@ -1,7 +1,7 @@
 import React, {FC} from 'react';
-import {Tooltip} from "../../../ui/Tooltip";
-import {IconButton} from "../../../ui/IconButton";
-import {colors} from "../../../modules/app";
+import {Tooltip} from '../../../ui/Tooltip';
+import {IconButton} from '../../../ui/IconButton';
+import {colors} from '../../../modules/app';
 
 interface ToolbarActionProps {
   tooltipMsg: string;

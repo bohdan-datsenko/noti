@@ -1,7 +1,7 @@
 import React, {Component} from 'react';
-import {connect} from "react-redux";
-import ErrorPage from "../../pages/errorPage/ErrorPage";
-import Wrapper from "../../components/Wrapper";
+import {connect} from 'react-redux';
+import ErrorPage from '../../pages/errorPage/ErrorPage';
+import Wrapper from '../../components/Wrapper';
 
 interface IState {
   error: { message: string; } | null;

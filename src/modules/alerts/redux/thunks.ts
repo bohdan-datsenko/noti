@@ -1,6 +1,6 @@
-import {createAppAsyncThunk} from "../../app/hooks/redux";
-import {addAlert} from "./slice";
-import {Severity} from "../utils/utils";
+import {createAppAsyncThunk} from '../../app/hooks/redux';
+import {addAlert} from './slice';
+import {Severity} from '../utils/utils';
 
 interface generateAlertPayload {
   id?: string;

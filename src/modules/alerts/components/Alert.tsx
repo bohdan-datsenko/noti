@@ -1,9 +1,9 @@
 import React, {FC, useEffect} from 'react';
 import {removeAlert} from '../redux/slice';
 import {colors, useAppDispatch} from '../../app';
-import {IconButton} from "../../../ui/IconButton";
-import {CgClose} from "react-icons/cg";
-import {calcSeverityColor, Severity} from "../utils/utils";
+import {IconButton} from '../../../ui/IconButton';
+import {CgClose} from 'react-icons/cg';
+import {calcSeverityColor, Severity} from '../utils/utils';
 
 interface AlertProps {
   id: string;
