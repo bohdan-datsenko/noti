@@ -10,7 +10,7 @@ const RemoveAction = () => {
 
   return (
     <ToolbarAction handleClick={() => dispatch(handleRemove())}
-                   tooltipMsg={'Shortcut: Ctrl + S'}
+                   tooltipMsg={'Shortcut: Ctrl + D'}
                    color={colors.ERROR}
                    disabled={selectedId === -1}
     >
