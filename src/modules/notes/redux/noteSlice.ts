@@ -34,8 +34,13 @@ const notesSlice = createSlice({
       state.notes.push(note);
       state.selectedId = note.id;
     },
-    updateDraftNote: (state, action: PayloadAction<Required<IDraftNote>>) => {
-      const {id, title, text, newTitle, newText, isEdited} = action.payload;
+    updateDraftNote: (state, action: PayloadAction<IDraftNote>) => {
+      const {id,
+        title,
+        text,
+        newTitle,
+        newText,
+        isEdited} = action.payload;
 
       const index = state.notes.findIndex(note => note.id === id);
       state.notes[index] = {...state.notes[index], title, text, newTitle, newText, isEdited};

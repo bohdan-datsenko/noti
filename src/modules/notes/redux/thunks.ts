@@ -1,6 +1,11 @@
 import {NotesAPI} from '../api/NotesAPI';
 import {INote} from '../types/notes';
-import {addDraftNote, removeDraftNote, selectNote, updateDraftNote} from './noteSlice';
+import {
+  addDraftNote,
+  removeDraftNote,
+  selectNote,
+  updateDraftNote,
+} from './noteSlice';
 import {createAppAsyncThunk} from '../../app/hooks/redux';
 import {handleError} from '../../app/utils/utils';
 
@@ -111,27 +116,25 @@ export const handleRemove = createAppAsyncThunk(
   dispatch(selectNote(-1));
   });
 
-interface HandleUpdateDraftProps { // todo
-  title: string;
-  text: string;
+interface IUpdatedNoteData {
+  title?: string;
+  text?: string;
 }
 
 export const handleUpdateDraft = createAppAsyncThunk(
-  'notes/updateDraft',
-  (data: HandleUpdateDraftProps, {dispatch, getState}) => {
+  'notes/updateDraftNoteTitle',
+  (data: IUpdatedNoteData, {dispatch, getState}) => {
     const selectedId = getState().noteReducer.selectedId;
     const note = getState().noteReducer.notes.find((n) => n.id === selectedId)!; // todo
-    const isEditSame = note.title === data.title
-      && note.text === data.text;
-    const isNoteNotEdited = note.title === data.title
-      && note.text === data.text;
 
-    const isDataEqual = isEditSame || isNoteNotEdited;
+    const title = note.newTitle !== undefined ? note.newTitle : note.title;
+    const text = note.newText !== undefined ? note.newText : note.text;
 
-    if (isDataEqual && !note.isNew) {
-      dispatch(updateDraftNote({...note, newTitle: data.title, newText: data.text, isEdited: false}))
-    } else {
-      dispatch(updateDraftNote({...note, isEdited: true, newTitle: data.title, newText: data.text}));
-    }
+    const newTitle = data.title !== undefined ? data.title : title;
+    const newText = data.text !== undefined ? data.text : text;
+
+    const isTitleEdited = newTitle !== note.title;
+    const isTextEdited = newText !== note.text;
+
+    dispatch(updateDraftNote({...note, newTitle: newTitle, newText: newText, isEdited: isTitleEdited || isTextEdited}))
 });
-
