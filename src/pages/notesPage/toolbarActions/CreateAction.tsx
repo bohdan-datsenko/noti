@@ -1,5 +1,5 @@
 import React from 'react';
-import ToolbarAction from '../../../components/toolbar/components/ToolbarAction'; // todo
+import {ToolbarAction} from '../../../components/toolbar';
 import {handleAddDraft} from '../../../modules/notes';
 import {BiPlus} from 'react-icons/bi';
 import {useAppDispatch} from '../../../modules/app';
