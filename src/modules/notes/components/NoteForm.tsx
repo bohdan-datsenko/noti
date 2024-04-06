@@ -13,8 +13,8 @@ const NoteForm = () => {
       {note &&
         <div key={selectedNoteId} className='flex flex-col overflow-hidden max-w-full p-2 gap-2 bg-zinc-50'>
           {/*{todo}*/}
-          <TitleInput initTitle={note.isEdited && note.newTitle ? note.newTitle : note.title} />
-          <TextareaInput initText={note.isEdited && note.newText ? note.newText : note.text} />
+          <TitleInput initTitle={note.isEdited && note.draftTitle ? note.draftTitle : note.title} />
+          <TextareaInput initText={note.isEdited && note.draftText ? note.draftText : note.text} />
         </div>
       }
 

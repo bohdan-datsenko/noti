@@ -38,12 +38,12 @@ const notesSlice = createSlice({
       const {id,
         title,
         text,
-        newTitle,
-        newText,
+        draftTitle,
+        draftText,
         isEdited} = action.payload;
 
       const index = state.notes.findIndex(note => note.id === id);
-      state.notes[index] = {...state.notes[index], title, text, newTitle, newText, isEdited};
+      state.notes[index] = {...state.notes[index], title, text, draftTitle: draftTitle, draftText: draftText, isEdited};
     },
     removeDraftNote: (state, action) => {
       state.notes = state.notes.filter(({id}) => id !== action.payload);

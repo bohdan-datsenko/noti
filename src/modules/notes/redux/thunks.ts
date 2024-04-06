@@ -74,14 +74,14 @@ export const handleSave = createAppAsyncThunk(
     if (!note || !note.isEdited) return;
 
     if (note.isNew) {
-      const newNote = { id: note.id, title: note.newTitle, text: note.newText } as INote;
+      const newNote = { id: note.id, title: note.draftTitle, text: note.draftText } as INote;
       await dispatch(createNote(newNote));
       dispatch(removeDraftNote(note.id));
     } else {
       await dispatch(updateNoteById({
         id: note.id,
-        title: note.newTitle!,  // todo
-        text: note.newText! // todo
+        title: note.draftTitle!,  // todo
+        text: note.draftText! // todo
       }));
     }
 
@@ -127,8 +127,8 @@ export const handleUpdateDraft = createAppAsyncThunk(
     const selectedId = getState().noteReducer.selectedId;
     const note = getState().noteReducer.notes.find((n) => n.id === selectedId)!; // todo
 
-    const title = note.newTitle !== undefined ? note.newTitle : note.title;
-    const text = note.newText !== undefined ? note.newText : note.text;
+    const title = note.draftTitle !== undefined ? note.draftTitle : note.title;
+    const text = note.draftText !== undefined ? note.draftText : note.text;
 
     const newTitle = data.title !== undefined ? data.title : title;
     const newText = data.text !== undefined ? data.text : text;
@@ -136,5 +136,5 @@ export const handleUpdateDraft = createAppAsyncThunk(
     const isTitleEdited = newTitle !== note.title;
     const isTextEdited = newText !== note.text;
 
-    dispatch(updateDraftNote({...note, newTitle: newTitle, newText: newText, isEdited: isTitleEdited || isTextEdited}))
+    dispatch(updateDraftNote({...note, draftTitle: newTitle, draftText: newText, isEdited: isTitleEdited || isTextEdited}))
 });
