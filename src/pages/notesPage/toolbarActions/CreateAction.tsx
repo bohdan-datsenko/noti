@@ -8,7 +8,7 @@ const CreateAction = () => {
   const dispatch = useAppDispatch();
 
   return (
-    <ToolbarAction handleClick={() => dispatch(handleAddDraft())} tooltipMsg={'Shortcut: Ctrl + C'}>
+    <ToolbarAction handleClick={() => dispatch(handleAddDraft())} tooltipMsg={'Shortcut: Ctrl + N'}>
       <BiPlus size={22} />
     </ToolbarAction>
   );
