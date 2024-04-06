@@ -1,9 +1,9 @@
 const save = (e: KeyboardEvent) => e.ctrlKey && e.code === 'KeyS';
-const create = (e: KeyboardEvent) => e.ctrlKey && e.code === 'KeyC';
+const addDraft = (e: KeyboardEvent) => e.ctrlKey && e.code === 'KeyC';
 const remove = (e: KeyboardEvent) => e.ctrlKey && e.code === 'KeyD';
 
 export const shortcuts = {
   SAVE: save,
-  CREATE: create,
+  ADD_DRAFT: addDraft,
   REMOVE: remove,
 }

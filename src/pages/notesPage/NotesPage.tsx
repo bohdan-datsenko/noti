@@ -24,7 +24,7 @@ export const NotesPage = () => {
 
   // handle keyboard shortcuts for whole page
   useKeyboardShortcut(shortcuts.SAVE, () => dispatch(handleSave()));
-  useKeyboardShortcut(shortcuts.CREATE, () => dispatch(handleAddDraft()));
+  useKeyboardShortcut(shortcuts.ADD_DRAFT, () => dispatch(handleAddDraft()));
   useKeyboardShortcut(shortcuts.REMOVE,  () => dispatch(handleRemove()));
 
   const actions = useMemo(() => [
