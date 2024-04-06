@@ -13,5 +13,5 @@ export const useKeyboardShortcut = (checkShortcut: (e: KeyboardEvent) => boolean
     return () => {
       document.removeEventListener('keydown', handler);
     };
-  }, [callback])
+  }, [])
 };
