@@ -122,7 +122,7 @@ interface IUpdatedNoteData {
 }
 
 export const handleUpdateDraft = createAppAsyncThunk(
-  'notes/updateDraftNoteTitle',
+  'notes/updateDraftNote',
   (data: IUpdatedNoteData, {dispatch, getState}) => {
     const selectedId = getState().noteReducer.selectedId;
     const note = getState().noteReducer.notes.find((n) => n.id === selectedId)!; // todo
