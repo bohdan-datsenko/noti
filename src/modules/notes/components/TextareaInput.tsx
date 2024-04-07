@@ -1,6 +1,6 @@
 import React, {ChangeEvent, FC, useState} from 'react';
 import {useAppDispatch} from '../../app';
-import {handleUpdateDraft} from "../redux/thunks";
+import {handleUpdateDraft} from '../redux/thunks';
 
 interface TextareaInputProps {
   initText: string;

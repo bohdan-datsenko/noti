@@ -1,4 +1,4 @@
-import {configureStore} from '@reduxjs/toolkit';
+import {configureStore, createAsyncThunk} from '@reduxjs/toolkit';
 import {rootReducer} from './rootReducer';
 
 export const setupStore = () => {
@@ -10,7 +10,8 @@ export const setupStore = () => {
 export type RootState = ReturnType<typeof rootReducer>;
 export type AppStore = ReturnType<typeof setupStore>;
 export type AppDispatch = AppStore['dispatch'];
-export type ThunkApiConfig = { // todo does it good practice to omit parameters?
+export type ThunkApiConfig = {
   state: RootState
   dispatch: AppDispatch
-}
+};
+export const createAppAsyncThunk = createAsyncThunk.withTypes<ThunkApiConfig>();

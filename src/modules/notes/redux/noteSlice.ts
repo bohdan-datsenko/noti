@@ -4,7 +4,7 @@ import {createNote, fetchNotes, updateNoteById} from './thunks';
 import {notesMatchers} from './matchers';
 import {ActionWithMetadata} from '../../app';
 
-// todo
+// todo where to store interfaces
 interface NotesState {
   selectedId: number;
   notes: IDraftNote[];

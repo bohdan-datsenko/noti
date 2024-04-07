@@ -6,17 +6,15 @@ import {
   selectNote,
   updateDraftNote,
 } from './noteSlice';
-import {createAppAsyncThunk} from '../../app/hooks/redux';
-import {handleError} from '../../app/utils/utils';
+import {createAppAsyncThunk} from '../../app/redux/store';
+import {handleError} from '../../app';
 
 export const fetchNotes = createAppAsyncThunk(
   'notes/fetchNotes',
   async (_, {dispatch}) => {
     try {
       const {data, status} = await NotesAPI.fetchAll();
-      if(status === 200) {
-        return data;
-      }
+      return data;
     } catch (err) {
       dispatch(handleError( {path: 'notes/fetchNotes', message: 'Failed to fetch notes'}));
     }
@@ -29,10 +27,8 @@ export const updateNoteById = createAppAsyncThunk(
   'notes/updateNoteById',
   async (note: INote, {dispatch}) => {
     try {
-      const {status} = await NotesAPI.updateById(note);
-      if (status === 200) {
-        return note.id;
-      }
+      await NotesAPI.updateById(note);
+      return note.id;
     } catch (err) {
       dispatch(handleError({path: 'notes/updateNoteById', message: `Failed to update note with id: ${note.id}`}));
     }
@@ -55,10 +51,8 @@ export const createNote = createAppAsyncThunk(
   'notes/createNote',
   async (note: INote, {dispatch}) => {
     try {
-      const {data, status} = await NotesAPI.createNote(note.title, note.text);
-      if (status === 201) {
-        return data.id;
-      }
+      const {data} = await NotesAPI.createNote(note.title, note.text);
+      return data.id;
     } catch (err: any) {
       dispatch(handleError({path: 'notes/removeNoteById', message: err.message}));
     }
@@ -71,21 +65,20 @@ export const handleSave = createAppAsyncThunk(
     const selectedId = getState().noteReducer.selectedId;
     const note = getState().noteReducer.notes.find(note => note.id === selectedId);
 
-    if (!note || !note.isEdited) return;
-
-    if (note.isNew) {
-      const newNote = { id: note.id, title: note.draftTitle, text: note.draftText } as INote;
-      await dispatch(createNote(newNote));
-      dispatch(removeDraftNote(note.id));
-    } else {
-      await dispatch(updateNoteById({
-        id: note.id,
-        title: note.draftTitle!,  // todo
-        text: note.draftText! // todo
-      }));
+    if (note && note.isEdited) {
+      if (note.isNew) {
+        const newNote = {id: note.id, title: note.draftTitle, text: note.draftText} as INote;
+        await dispatch(createNote(newNote));
+        dispatch(removeDraftNote(note.id));
+      } else {
+        await dispatch(updateNoteById({
+          id: note.id,
+          title: note.draftTitle!,  // todo
+          text: note.draftText! // todo
+        }));
+      }
+      dispatch(fetchNotes());
     }
-
-    dispatch(fetchNotes());
 });
 
 export const handleAddDraft = createAppAsyncThunk(
@@ -125,16 +118,21 @@ export const handleUpdateDraft = createAppAsyncThunk(
   'notes/updateDraftNote',
   (data: IUpdatedNoteData, {dispatch, getState}) => {
     const selectedId = getState().noteReducer.selectedId;
-    const note = getState().noteReducer.notes.find((n) => n.id === selectedId)!; // todo
+    const note = getState().noteReducer.notes.find((n) => n.id === selectedId);
 
-    const title = note.draftTitle !== undefined ? note.draftTitle : note.title;
-    const text = note.draftText !== undefined ? note.draftText : note.text;
+    if (note) {
+      const title = note.draftTitle !== undefined ? note.draftTitle : note.title;
+      const text = note.draftText !== undefined ? note.draftText : note.text;
 
-    const newTitle = data.title !== undefined ? data.title : title;
-    const newText = data.text !== undefined ? data.text : text;
+      const newTitle = data.title !== undefined ? data.title : title;
+      const newText = data.text !== undefined ? data.text : text;
 
-    const isTitleEdited = newTitle !== note.title;
-    const isTextEdited = newText !== note.text;
+      const isTitleEdited = newTitle !== note.title;
+      const isTextEdited = newText !== note.text;
 
-    dispatch(updateDraftNote({...note, draftTitle: newTitle, draftText: newText, isEdited: isTitleEdited || isTextEdited}))
+      dispatch(updateDraftNote({...note,
+        draftTitle: newTitle,
+        draftText: newText,
+        isEdited: isTitleEdited || isTextEdited}));
+    }
 });

@@ -1,4 +1,4 @@
-import {createAppAsyncThunk} from '../../app/hooks/redux';
+import {createAppAsyncThunk} from '../../app/redux/store';
 import {addAlert} from './slice';
 import {Severity} from '../utils/utils';
 
