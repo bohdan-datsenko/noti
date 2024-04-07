@@ -1,5 +1,5 @@
 import {generateAlert, Severity} from '../../alerts';
-import {createAppAsyncThunk} from "../redux/store";
+import {createAppAsyncThunk} from '../redux/store';
 
 export const exhaustiveCheck = (param: never) => {};
 

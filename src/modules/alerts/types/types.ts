@@ -1,4 +1,4 @@
-import {Severity} from "../utils/utils";
+import {Severity} from '../utils/utils';
 
 export interface IAlert {
   id: string;
