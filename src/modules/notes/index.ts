@@ -1,4 +1,5 @@
 export {noteReducer} from './redux/noteSlice';
-export {fetchNotes, handleRemove, handleSave, handleAddDraft} from './redux/thunks'
-export {shortcuts} from './constants/notes'
-export {default} from './components/NoteForm'
+export {fetchNotes, handleRemove, handleSave, handleAddDraft} from './redux/thunks';
+export {shortcuts} from './constants/notes';
+export {default} from './components/NoteForm';
+export {getNotes, getSelectedNoteId, getSelectedNote} from './redux/noteSelectors';

@@ -1,6 +1,7 @@
 import React, {FC} from 'react';
 import {Tooltip} from './Tooltip';
 import {useAppSelector} from '../modules/app';
+import {getSelectedNoteId} from '../modules/notes';
 
 interface IconButtonProps {
   id: number;
@@ -10,7 +11,7 @@ interface IconButtonProps {
 }
 
 const SelectWithInfo: FC<IconButtonProps> = ({id, value, isUnsaved, handleClick}) => {
-  const selectedId = useAppSelector((state) => state.noteReducer.selectedId);
+  const selectedId = useAppSelector(getSelectedNoteId);
 
   let buttonClasses = 'group w-11/12 flex justify-between gap-1 px-4 py-2 rounded border-b transition-colors cursor-pointer select-none hover:bg-zinc-300';
   if (id === selectedId) {

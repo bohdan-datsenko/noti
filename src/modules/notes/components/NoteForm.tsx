@@ -2,16 +2,15 @@ import React from 'react';
 import {useAppSelector} from '../../app';
 import TitleInput from './TitleInput';
 import TextareaInput from './TextareaInput';
+import {getSelectedNote} from '../redux/noteSelectors';
 
 const NoteForm = () => {
-  const selectedNoteId = useAppSelector(state => state.noteReducer.selectedId);
-  const note = useAppSelector(state =>
-    state.noteReducer.notes.find((n) => n.id === selectedNoteId)); // todo;
+  const note = useAppSelector(getSelectedNote);
 
   return (
     <>
       {note &&
-        <div key={selectedNoteId} className='flex flex-col overflow-hidden max-w-full p-2 gap-2 bg-zinc-50'>
+        <div key={note.id} className='flex flex-col overflow-hidden max-w-full p-2 gap-2 bg-zinc-50'>
           {/*{todo}*/}
           <TitleInput initTitle={note.isEdited && note.draftTitle ? note.draftTitle : note.title} />
           <TextareaInput initText={note.isEdited && note.draftText ? note.draftText : note.text} />
