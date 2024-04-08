@@ -8,6 +8,7 @@ import {
 } from './noteSlice';
 import {createAppAsyncThunk} from '../../app/redux/store';
 import {handleError} from '../../app';
+import {getSelectedNote} from './noteSelectors';
 
 export const fetchNotes = createAppAsyncThunk(
   'notes/fetchNotes',
@@ -63,20 +64,17 @@ export const createNote = createAppAsyncThunk(
 export const handleSave = createAppAsyncThunk(
   'notes/handleSave',
   async (_, {dispatch, getState}) => {
-    const selectedId = getState().noteReducer.selectedId;
-    const note = getState().noteReducer.notes.find(note => note.id === selectedId);
+    const selectedNote = getSelectedNote(getState());
 
-    if (note === undefined || note.draftTitle === undefined || note.draftText === undefined) return;
-
-    if (note.isNew) {
-      const newNote = {id: note.id, title: note.draftTitle, text: note.draftText} as INote;
+    if (selectedNote.isNew) {
+      const newNote = {id: selectedNote.id, title: selectedNote.draftTitle, text: selectedNote.draftText} as INote;
       await dispatch(createNote(newNote));
-      dispatch(removeDraftNote(note.id));
+      dispatch(removeDraftNote(selectedNote.id));
     } else {
       await dispatch(updateNoteById({
-        id: note.id,
-        title: note.draftTitle,
-        text: note.draftText
+        id: selectedNote.id,
+        title: selectedNote.draftTitle,
+        text: selectedNote.draftText
       }));
     }
     dispatch(fetchNotes());
@@ -91,8 +89,7 @@ export const handleAddDraft = createAppAsyncThunk(
 export const handleRemove = createAppAsyncThunk(
   'notes/remove',
   async (_, {dispatch, getState}) => {
-  const selectedId = getState().noteReducer.selectedId;
-  const selectedNote = getState().noteReducer.notes.find(note => note.id === selectedId);
+  const selectedNote = getSelectedNote(getState());
 
   const isConfirmed = window.confirm('Are you sure you want to remove note?');
   if (!isConfirmed || !selectedNote){
@@ -118,20 +115,19 @@ interface IUpdatedNoteData {
 export const handleUpdateDraft = createAppAsyncThunk(
   'notes/updateDraftNote',
   (data: IUpdatedNoteData, {dispatch, getState}) => {
-    const selectedId = getState().noteReducer.selectedId;
-    const note = getState().noteReducer.notes.find((n) => n.id === selectedId);
+    const selectedNote = getSelectedNote(getState());
 
-    if (note) {
-      const title = note.isEdited ? note.draftTitle : note.title;
-      const text = note.isEdited ? note.draftText : note.text;
+    if (selectedNote) {
+      const title = selectedNote.isEdited ? selectedNote.draftTitle : selectedNote.title;
+      const text = selectedNote.isEdited ? selectedNote.draftText : selectedNote.text;
 
       const newTitle = data.title !== undefined ? data.title : title;
       const newText = data.text !== undefined ? data.text : text;
 
-      const isTitleEdited = newTitle !== note.title;
-      const isTextEdited = newText !== note.text;
+      const isTitleEdited = newTitle !== selectedNote.title;
+      const isTextEdited = newText !== selectedNote.text;
 
-      dispatch(updateDraftNote({...note,
+      dispatch(updateDraftNote({...selectedNote,
         draftTitle: newTitle,
         draftText: newText,
         isEdited: isTitleEdited || isTextEdited}));
