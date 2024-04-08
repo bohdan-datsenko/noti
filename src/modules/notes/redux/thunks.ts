@@ -122,8 +122,8 @@ export const handleUpdateDraft = createAppAsyncThunk(
     const note = getState().noteReducer.notes.find((n) => n.id === selectedId);
 
     if (note) {
-      const title = note.draftTitle !== undefined ? note.draftTitle : note.title;
-      const text = note.draftText !== undefined ? note.draftText : note.text;
+      const title = note.isEdited ? note.draftTitle : note.title;
+      const text = note.isEdited ? note.draftText : note.text;
 
       const newTitle = data.title !== undefined ? data.title : title;
       const newText = data.text !== undefined ? data.text : text;
