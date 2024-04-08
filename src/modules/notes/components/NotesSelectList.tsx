@@ -1,7 +1,7 @@
 import React, {FC} from 'react';
 import {useAppDispatch, useAppSelector} from '../../app';
 import SelectWithInfo from '../../../ui/SelectWithInfo';
-import {setSelectedNote} from '../redux/noteSlice';
+import {selectNote} from '../redux/noteSlice';
 import {shallowEqual} from 'react-redux';
 
 interface NotesSelectListProps {
@@ -12,10 +12,8 @@ export const NotesSelectList: FC<NotesSelectListProps> = ({handleClose}) => {
   const dispatch = useAppDispatch();
   const notes = useAppSelector((state) => state.noteReducer.notes, shallowEqual);
 
-  // todo
   const handleSelect = (id: number) => {
-    const newSelectedNote = notes.find((n) => n.id === id)!;
-    dispatch(setSelectedNote(newSelectedNote));
+    dispatch(selectNote(id));
     handleClose(); // todo
   }
 

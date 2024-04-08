@@ -10,11 +10,9 @@ interface IconButtonProps {
 }
 
 const SelectWithInfo: FC<IconButtonProps> = ({id, value, isUnsaved, handleClick}) => {
-  const selectedId = useAppSelector((state) =>
-    state.noteReducer.selectedNote?.id);
+  const selectedId = useAppSelector((state) => state.noteReducer.selectedId);
 
-  let buttonClasses = 'group w-11/12 flex justify-between gap-1 px-4 py-2 rounded border-b transition-colors' +
-    ' cursor-pointer select-none hover:bg-zinc-300';
+  let buttonClasses = 'group w-11/12 flex justify-between gap-1 px-4 py-2 rounded border-b transition-colors cursor-pointer select-none hover:bg-zinc-300';
   if (id === selectedId) {
     buttonClasses += ' bg-zinc-200';
   }

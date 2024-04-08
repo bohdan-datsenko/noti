@@ -4,8 +4,7 @@ import TitleInput from './TitleInput';
 import TextareaInput from './TextareaInput';
 
 const NoteForm = () => {
-  const selectedNoteId = useAppSelector(state =>
-    state.noteReducer.selectedNote?.id);
+  const selectedNoteId = useAppSelector(state => state.noteReducer.selectedId);
   const note = useAppSelector(state =>
     state.noteReducer.notes.find((n) => n.id === selectedNoteId)); // todo;
 
