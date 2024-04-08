@@ -27,8 +27,7 @@ const Alert: FC<AlertProps> = ({id,
   const calculatedColor = calcSeverityColor(severity);
 
   return (
-    // todo 'remove ? sign'
-    <div className={`flex justify-between py-2 px-4 rounded ${calculatedColor?.bgColor} ${calculatedColor?.color}`}>
+    <div className={`flex justify-between py-2 px-4 rounded ${calculatedColor.bgColor} ${calculatedColor.color}`}>
       {children}
       <IconButton handleClick={() => dispatch(removeAlert(id))} color={colors.TRANSPARENT}>
         <CgClose />

@@ -59,26 +59,27 @@ export const createNote = createAppAsyncThunk(
   }
 );
 
+// todo make selectedNote instead of selectedId?
 export const handleSave = createAppAsyncThunk(
   'notes/handleSave',
   async (_, {dispatch, getState}) => {
     const selectedId = getState().noteReducer.selectedId;
     const note = getState().noteReducer.notes.find(note => note.id === selectedId);
 
-    if (note && note.isEdited) {
-      if (note.isNew) {
-        const newNote = {id: note.id, title: note.draftTitle, text: note.draftText} as INote;
-        await dispatch(createNote(newNote));
-        dispatch(removeDraftNote(note.id));
-      } else {
-        await dispatch(updateNoteById({
-          id: note.id,
-          title: note.draftTitle!,  // todo
-          text: note.draftText! // todo
-        }));
-      }
-      dispatch(fetchNotes());
+    if (note === undefined || note.draftTitle === undefined || note.draftText === undefined) return;
+
+    if (note.isNew) {
+      const newNote = {id: note.id, title: note.draftTitle, text: note.draftText} as INote;
+      await dispatch(createNote(newNote));
+      dispatch(removeDraftNote(note.id));
+    } else {
+      await dispatch(updateNoteById({
+        id: note.id,
+        title: note.draftTitle,
+        text: note.draftText
+      }));
     }
+    dispatch(fetchNotes());
 });
 
 export const handleAddDraft = createAppAsyncThunk(

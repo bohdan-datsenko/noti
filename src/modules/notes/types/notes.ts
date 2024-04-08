@@ -4,9 +4,9 @@ export interface INote {
     text: string;
 }
 
-export interface IDraftNote extends INote {
-    draftTitle?: string;
-    draftText?: string;
+export interface IEditedNote extends INote {
     isEdited: boolean;
     isNew: boolean;
+    draftTitle: string;
+    draftText: string;
 }

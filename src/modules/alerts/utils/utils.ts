@@ -1,5 +1,3 @@
-import {exhaustiveCheck} from '../../app/utils/utils';
-
 export enum Severity {
   INFO = 'INFO',
   SUCCESS ='SUCCESS',
@@ -7,7 +5,9 @@ export enum Severity {
   ERROR = 'ERROR',
 }
 
-export const calcSeverityColor = (severity: Severity) => {
+type SeverityColor = { bgColor: string; color: string };
+
+export const calcSeverityColor = (severity: Severity): SeverityColor => {
   switch (severity) {
     case Severity.INFO:
       return {bgColor: 'bg-sky-500', color: 'text-white'};
@@ -17,7 +17,5 @@ export const calcSeverityColor = (severity: Severity) => {
       return {bgColor: 'bg-amber-500', color: 'text-white'};
     case Severity.ERROR:
       return {bgColor: 'bg-red-500', color: 'text-white'};
-    default:
-      exhaustiveCheck(severity);
   }
 }

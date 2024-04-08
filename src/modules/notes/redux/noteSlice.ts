@@ -1,5 +1,5 @@
 import {createSlice, PayloadAction} from '@reduxjs/toolkit';
-import {IDraftNote, INote} from '../types/notes';
+import {IEditedNote, INote} from '../types/notes';
 import {createNote, fetchNotes, updateNoteById} from './thunks';
 import {notesMatchers} from './matchers';
 import {ActionWithMetadata} from '../../app';
@@ -7,7 +7,7 @@ import {ActionWithMetadata} from '../../app';
 // todo where to store interfaces
 interface NotesState {
   selectedId: number;
-  notes: IDraftNote[];
+  notes: IEditedNote[];
   isLoading: boolean;
   error: { message: string } | null;
 }
@@ -29,12 +29,17 @@ const notesSlice = createSlice({
     addDraftNote: (state, action: PayloadAction<Omit<INote, 'id'>>) => {
       const length = state.notes.length;
       let id = length > 0 ? state.notes[length - 1].id + 1 : 0;
-      const note = {...action.payload, id, isEdited: true, isNew: true};
+      const note: IEditedNote = {...action.payload,
+        id, draftTitle: '',
+        draftText: '',
+        isEdited: true,
+        isNew: true
+      };
 
       state.notes.push(note);
       state.selectedId = note.id;
     },
-    updateDraftNote: (state, action: PayloadAction<IDraftNote>) => {
+    updateDraftNote: (state, action: PayloadAction<IEditedNote>) => {
       const {id,
         title,
         text,
@@ -56,7 +61,12 @@ const notesSlice = createSlice({
         const draftNotesIds = draftNotes.map((note) => note.id);
         const fetchedNotes = action.payload
           .filter((fetchedNote) => !draftNotesIds.includes(fetchedNote.id))
-          .map((fetchedNote) => ({...fetchedNote, isEdited: false, isNew: false}));
+          .map((fetchedNote) => ({...fetchedNote,
+            draftTitle: '',
+            draftText: '',
+            isEdited: false,
+            isNew: false
+          }));
         const fetchedNotesIds = fetchedNotes.map((note) => note.id);
 
         state.notes = [...fetchedNotes, ...draftNotes.filter((draftNote) => !fetchedNotesIds.includes(draftNote.id))];
