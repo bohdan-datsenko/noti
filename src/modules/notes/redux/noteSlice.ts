@@ -6,14 +6,14 @@ import {ActionWithMetadata} from '../../app';
 
 // todo where to store interfaces
 interface NotesState {
-  selectedId: number;
+  selectedNote: IEditedNote | null;
   notes: IEditedNote[];
   isLoading: boolean;
   error: { message: string } | null;
 }
 
 const initialState: NotesState = {
-  selectedId: -1,
+  selectedNote: null,
   notes: [],
   isLoading: false,
   error: null,
@@ -23,8 +23,8 @@ const notesSlice = createSlice({
   name: 'notes',
   initialState: initialState,
   reducers: {
-    selectNote: (state, action: PayloadAction<number>) => {
-      state.selectedId = action.payload;
+    setSelectedNote: (state, action: PayloadAction<IEditedNote | null>) => {
+      state.selectedNote = action.payload;
     },
     addDraftNote: (state, action: PayloadAction<Omit<INote, 'id'>>) => {
       const length = state.notes.length;
@@ -37,7 +37,7 @@ const notesSlice = createSlice({
       };
 
       state.notes.push(note);
-      state.selectedId = note.id;
+      state.selectedNote = note;
     },
     updateDraftNote: (state, action: PayloadAction<IEditedNote>) => {
       const {id,
@@ -72,11 +72,15 @@ const notesSlice = createSlice({
         state.notes = [...fetchedNotes, ...draftNotes.filter((draftNote) => !fetchedNotesIds.includes(draftNote.id))];
       })
       .addCase(createNote.fulfilled, (state, action) => {
-        state.selectedId = action.payload!; // todo
+        state.selectedNote = {...action.payload, draftTitle: '', draftText: '', isEdited: false, isNew: false} as IEditedNote;
       })
+      // todo
       .addCase(updateNoteById.fulfilled, (state, action) => {
-        state.notes = state.notes.filter(({id}) => id !== action.payload);
-        state.selectedId = action.payload!; // todo
+        state.notes = state.notes.filter(({id}) => id !== action.payload?.id);
+        const newSelectedNote = state.notes.find((n) => n.id === action.payload?.id);
+        if (newSelectedNote) {
+          state.selectedNote = newSelectedNote;
+        }
       })
       .addMatcher(notesMatchers, (state, action: ActionWithMetadata) => {
         const isError = action.meta.requestStatus === 'rejected';
@@ -92,7 +96,7 @@ const notesSlice = createSlice({
 });
 
 export const {
-  selectNote,
+  setSelectedNote,
   addDraftNote,
   updateDraftNote,
   removeDraftNote

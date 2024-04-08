@@ -3,7 +3,7 @@ import {INote} from '../types/notes';
 import {
   addDraftNote,
   removeDraftNote,
-  selectNote,
+  setSelectedNote,
   updateDraftNote,
 } from './noteSlice';
 import {createAppAsyncThunk} from '../../app/redux/store';
@@ -28,7 +28,7 @@ export const updateNoteById = createAppAsyncThunk(
   async (note: INote, {dispatch}) => {
     try {
       await NotesAPI.updateById(note);
-      return note.id;
+      return note;
     } catch (err) {
       dispatch(handleError({path: 'notes/updateNoteById', message: `Failed to update note with id: ${note.id}`}));
     }
@@ -52,7 +52,7 @@ export const createNote = createAppAsyncThunk(
   async (note: INote, {dispatch}) => {
     try {
       const {data} = await NotesAPI.createNote(note.title, note.text);
-      return data.id;
+      return data;
     } catch (err: any) {
       dispatch(handleError({path: 'notes/removeNoteById', message: err.message}));
     }
@@ -63,7 +63,7 @@ export const createNote = createAppAsyncThunk(
 export const handleSave = createAppAsyncThunk(
   'notes/handleSave',
   async (_, {dispatch, getState}) => {
-    const selectedId = getState().noteReducer.selectedId;
+    const selectedId = getState().noteReducer.selectedNote?.id;
     const note = getState().noteReducer.notes.find(note => note.id === selectedId);
 
     if (note === undefined || note.draftTitle === undefined || note.draftText === undefined) return;
@@ -91,8 +91,9 @@ export const handleAddDraft = createAppAsyncThunk(
 export const handleRemove = createAppAsyncThunk(
   'notes/remove',
   async (_, {dispatch, getState}) => {
-  const selectedId = getState().noteReducer.selectedId;
-  const selectedNote = getState().noteReducer.notes.find(note => note.id === selectedId);
+  const selectedNote = getState().noteReducer.selectedNote;
+
+  if (!selectedNote) return;
 
   const isConfirmed = window.confirm('Are you sure you want to remove note?');
   if (!isConfirmed || !selectedNote){
@@ -107,7 +108,7 @@ export const handleRemove = createAppAsyncThunk(
     dispatch(removeDraftNote(selectedNote.id));
   }
 
-  dispatch(selectNote(-1));
+  dispatch(setSelectedNote(null));
   });
 
 interface IUpdatedNoteData {
@@ -118,7 +119,7 @@ interface IUpdatedNoteData {
 export const handleUpdateDraft = createAppAsyncThunk(
   'notes/updateDraftNote',
   (data: IUpdatedNoteData, {dispatch, getState}) => {
-    const selectedId = getState().noteReducer.selectedId;
+    const selectedId = getState().noteReducer.selectedNote?.id;
     const note = getState().noteReducer.notes.find((n) => n.id === selectedId);
 
     if (note) {

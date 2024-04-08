@@ -6,7 +6,7 @@ import {BiSave} from 'react-icons/bi';
 
 const SaveAction = () => {
   const dispatch = useAppDispatch();
-  const selectedId = useAppSelector((state) => state.noteReducer.selectedId);
+  const selectedId = useAppSelector((state) => state.noteReducer.selectedNote?.id);
   const note = useAppSelector((state) =>
     state.noteReducer.notes.find((n) => n.id === selectedId));
 

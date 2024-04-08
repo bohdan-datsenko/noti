@@ -6,7 +6,7 @@ import {BiTrash} from 'react-icons/bi';
 
 const RemoveAction = () => {
   const dispatch = useAppDispatch();
-  const selectedId = useAppSelector((state) => state.noteReducer.selectedId);
+  const selectedId = useAppSelector((state) => state.noteReducer.selectedNote?.id);
 
   return (
     <ToolbarAction handleClick={() => dispatch(handleRemove())}
