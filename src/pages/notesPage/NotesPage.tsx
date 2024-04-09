@@ -10,17 +10,19 @@ import CreateAction from './toolbarActions/CreateAction';
 import SaveAction from './toolbarActions/SaveAction';
 import RemoveAction from './toolbarActions/RemoveAction';
 import Sidebar from '../../components/Sidebar';
+import {useHandleErrors} from '../../modules/app';
 
 export const NotesPage = () => {
   const dispatch = useAppDispatch();
   const isLoading = useAppSelector(state => state.noteReducer.isLoading);
-  const error = useAppSelector(state => state.noteReducer.error);
+  const [isMenuOpen, setIsMenuOpen] = useState(false);
 
   useEffect(() => {
     dispatch(fetchNotes());
   }, []);
 
-  const [isMenuOpen, setIsMenuOpen] = useState(false);
+  // handle async errors from api requests
+  useHandleErrors();
 
   // handle keyboard shortcuts for whole page
   useKeyboardShortcut(shortcuts.SAVE, () => dispatch(handleSave()));

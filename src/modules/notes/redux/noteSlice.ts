@@ -9,14 +9,12 @@ interface NotesState {
   selectedId: number;
   notes: IEditedNote[];
   isLoading: boolean;
-  error: { message: string } | null;
 }
 
 const initialState: NotesState = {
   selectedId: -1,
   notes: [],
   isLoading: false,
-  error: null,
 };
 
 const notesSlice = createSlice({
@@ -52,7 +50,7 @@ const notesSlice = createSlice({
     },
     removeDraftNote: (state, action) => {
       state.notes = state.notes.filter(({id}) => id !== action.payload);
-    }
+    },
   },
   extraReducers: (builder) => {
     builder
@@ -72,15 +70,14 @@ const notesSlice = createSlice({
         state.notes = [...fetchedNotes, ...draftNotes.filter((draftNote) => !fetchedNotesIds.includes(draftNote.id))];
       })
       .addCase(createNote.fulfilled, (state, action) => {
-        state.selectedId = action.payload!; // todo
+        state.selectedId = action.payload;
       })
       .addCase(updateNoteById.fulfilled, (state, action) => {
         state.notes = state.notes.filter(({id}) => id !== action.payload);
-        state.selectedId = action.payload!; // todo
+        state.selectedId = action.payload; // todo
       })
       .addMatcher(notesMatchers, (state, action: ActionWithMetadata) => {
         state.isLoading = action.meta.requestStatus === 'pending';
-        state.error = action.error;
       })
   }
 });
@@ -89,6 +86,6 @@ export const {
   selectNote,
   addDraftNote,
   updateDraftNote,
-  removeDraftNote
+  removeDraftNote,
 } = notesSlice.actions;
 export const noteReducer = notesSlice.reducer;

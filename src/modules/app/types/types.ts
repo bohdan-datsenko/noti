@@ -6,3 +6,8 @@ export interface ActionWithMetadata extends UnknownAction {
     requestStatus: string;
   };
 }
+
+export interface IError {
+  path: string;
+  message: string;
+}

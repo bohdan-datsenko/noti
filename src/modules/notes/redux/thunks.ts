@@ -7,8 +7,8 @@ import {
   updateDraftNote,
 } from './noteSlice';
 import {createAppAsyncThunk} from '../../app/redux/store';
-import {handleError} from '../../app';
 import {getSelectedNote} from './noteSelectors';
+import {addError} from '../../app/redux/errorSlice';
 
 export const fetchNotes = createAppAsyncThunk(
   'notes/fetchNotes',
@@ -16,22 +16,23 @@ export const fetchNotes = createAppAsyncThunk(
     try {
       const {data} = await NotesAPI.fetchAll();
       return data;
-    } catch (err) {
-      dispatch(handleError( {path: 'notes/fetchNotes', message: 'Failed to fetch notes'}));
+    } catch (err: any) {
+      dispatch(addError({path: 'notes/fetchNotes', message: err.message}));
+      throw err;
     }
-
-    return []; // TODO
   }
 );
 
+// todo remove any
 export const updateNoteById = createAppAsyncThunk(
   'notes/updateNoteById',
   async (note: INote, {dispatch}) => {
     try {
       await NotesAPI.updateById(note);
       return note.id;
-    } catch (err) {
-      dispatch(handleError({path: 'notes/updateNoteById', message: `Failed to update note with id: ${note.id}`}));
+    } catch (err: any) {
+      dispatch(addError({path: 'notes/updateNoteById', message: err.message}));
+      throw err;
     }
   }
 );
@@ -43,7 +44,8 @@ export const removeNoteById = createAppAsyncThunk(
       const {status} = await NotesAPI.removeNoteById(id);
       return status;
     } catch (err: any) {
-      dispatch(handleError({path: 'notes/removeNoteById', message: err.message}));
+      dispatch(addError({path: 'notes/removeNoteById', message: err.message}));
+      throw err;
     }
   }
 );
@@ -55,7 +57,8 @@ export const createNote = createAppAsyncThunk(
       const {data} = await NotesAPI.createNote(note.title, note.text);
       return data.id;
     } catch (err: any) {
-      dispatch(handleError({path: 'notes/removeNoteById', message: err.message}));
+      dispatch(addError({path: 'notes/createNote', message: err.message}));
+      throw err;
     }
   }
 );
@@ -67,17 +70,19 @@ export const handleSave = createAppAsyncThunk(
     const selectedNote = getSelectedNote(getState());
 
     if (selectedNote.isNew) {
-      const newNote = {id: selectedNote.id, title: selectedNote.draftTitle, text: selectedNote.draftText} as INote;
-      await dispatch(createNote(newNote));
-      dispatch(removeDraftNote(selectedNote.id));
+      const newNote = {id: selectedNote.id, title: selectedNote.draftTitle, text: selectedNote.draftText};
+      await dispatch(createNote(newNote))
+        .unwrap()
+        .then(() => dispatch(fetchNotes()));
+      dispatch(removeDraftNote(selectedNote.id)); // there is filter already in the createNote?
     } else {
       await dispatch(updateNoteById({
         id: selectedNote.id,
         title: selectedNote.draftTitle,
         text: selectedNote.draftText
-      }));
+      })).unwrap()
+        .then(() => dispatch(fetchNotes()));
     }
-    dispatch(fetchNotes());
 });
 
 export const handleAddDraft = createAppAsyncThunk(
@@ -89,22 +94,22 @@ export const handleAddDraft = createAppAsyncThunk(
 export const handleRemove = createAppAsyncThunk(
   'notes/remove',
   async (_, {dispatch, getState}) => {
-  const selectedNote = getSelectedNote(getState());
+    const selectedNote = getSelectedNote(getState());
 
-  const isConfirmed = window.confirm('Are you sure you want to remove note?');
-  if (!isConfirmed || !selectedNote){
-    return;
-  }
+    const isConfirmed = window.confirm('Are you sure you want to remove note?');
+    if (!isConfirmed || !selectedNote){
+      return;
+    }
 
-  if (!selectedNote.isNew) {
-    dispatch(removeNoteById(selectedNote.id)).then(() => {
-      dispatch(fetchNotes());
-    });
-  } else {
-    dispatch(removeDraftNote(selectedNote.id));
-  }
-
-  dispatch(selectNote(-1));
+    if (!selectedNote.isNew) { // unwrap?
+      dispatch(removeNoteById(selectedNote.id)).then(() => {
+        dispatch(fetchNotes());
+        dispatch(selectNote(-1));
+      });
+    } else {
+      dispatch(removeDraftNote(selectedNote.id));
+      dispatch(selectNote(-1));
+    }
   });
 
 interface IUpdatedNoteData {
