@@ -79,14 +79,8 @@ const notesSlice = createSlice({
         state.selectedId = action.payload!; // todo
       })
       .addMatcher(notesMatchers, (state, action: ActionWithMetadata) => {
-        const isError = action.meta.requestStatus === 'rejected';
         state.isLoading = action.meta.requestStatus === 'pending';
-
-        if (isError) {
-          state.error = action.error;
-        } else {
-          state.error = null;
-        }
+        state.error = action.error;
       })
   }
 });

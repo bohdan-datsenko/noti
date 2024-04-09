@@ -14,7 +14,7 @@ export const fetchNotes = createAppAsyncThunk(
   'notes/fetchNotes',
   async (_, {dispatch}) => {
     try {
-      const {data, status} = await NotesAPI.fetchAll();
+      const {data} = await NotesAPI.fetchAll();
       return data;
     } catch (err) {
       dispatch(handleError( {path: 'notes/fetchNotes', message: 'Failed to fetch notes'}));
