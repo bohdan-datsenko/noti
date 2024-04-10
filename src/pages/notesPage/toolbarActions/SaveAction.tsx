@@ -1,16 +1,16 @@
-import React from 'react';
-import {useAppDispatch, useAppSelector} from '../../../modules/app';
+import React, {FC} from 'react';
 import ToolbarAction from '../../../components/toolbar/components/ToolbarAction';
-import {handleSave} from '../../../modules/notes';
 import {BiSave} from 'react-icons/bi';
-import {getSelectedNote} from '../../../modules/notes';
 
-const SaveAction = () => {
-  const dispatch = useAppDispatch();
-  const selectedNote = useAppSelector(getSelectedNote);
+interface SaveActionProps {
+  isDisabled: boolean;
+  handleSave: () => void;
+}
+
+const SaveAction: FC<SaveActionProps> = ({isDisabled, handleSave}) => {
 
   return (
-    <ToolbarAction handleClick={() => dispatch(handleSave())} tooltipMsg={'Shortcut: Ctrl + S'} disabled={!selectedNote?.isEdited}>
+    <ToolbarAction handleClick={handleSave} tooltipMsg={'Shortcut: Ctrl + S'} disabled={isDisabled}>
       <BiSave size={22} />
     </ToolbarAction>
   );

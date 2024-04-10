@@ -6,5 +6,5 @@ export const getSelectedNoteId = (state: RootState) => state.noteReducer.selecte
 export const getSelectedNote = (state: RootState) => {
   const selectedId = getSelectedNoteId(state);
   const notes = getNotes(state);
-  return notes.find((note) => note.id === selectedId)!;
+  return notes.find((note) => note.id === selectedId);
 };

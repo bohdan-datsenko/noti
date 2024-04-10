@@ -1,5 +1,4 @@
-import {NotesAPI} from '../api/NotesAPI';
-import {INote} from '../types/notes';
+import {IEditedNote} from '../types/notes';
 import {
   addDraftNote,
   removeDraftNote,
@@ -8,81 +7,36 @@ import {
 } from './noteSlice';
 import {createAppAsyncThunk} from '../../app/redux/store';
 import {getSelectedNote} from './noteSelectors';
-import {addError} from '../../app/redux/errorSlice';
-
-export const fetchNotes = createAppAsyncThunk(
-  'notes/fetchNotes',
-  async (_, {dispatch}) => {
-    try {
-      const {data} = await NotesAPI.fetchAll();
-      return data;
-    } catch (err: any) {
-      dispatch(addError({path: 'notes/fetchNotes', message: err.message}));
-      throw err;
-    }
-  }
-);
-
-// todo remove any
-export const updateNoteById = createAppAsyncThunk(
-  'notes/updateNoteById',
-  async (note: INote, {dispatch}) => {
-    try {
-      await NotesAPI.updateById(note);
-      return note.id;
-    } catch (err: any) {
-      dispatch(addError({path: 'notes/updateNoteById', message: err.message}));
-      throw err;
-    }
-  }
-);
-
-export const removeNoteById = createAppAsyncThunk(
-  'notes/removeNoteById',
-  async (id: number, {dispatch}) => {
-    try {
-      const {status} = await NotesAPI.removeNoteById(id);
-      return status;
-    } catch (err: any) {
-      dispatch(addError({path: 'notes/removeNoteById', message: err.message}));
-      throw err;
-    }
-  }
-);
-
-export const createNote = createAppAsyncThunk(
-  'notes/createNote',
-  async (note: INote, {dispatch}) => {
-    try {
-      const {data} = await NotesAPI.createNote(note.title, note.text);
-      return data.id;
-    } catch (err: any) {
-      dispatch(addError({path: 'notes/createNote', message: err.message}));
-      throw err;
-    }
-  }
-);
+import {createNote, removeNoteById, updateNote} from '../api/notesApi';
 
 // todo make selectedNote instead of selectedId?
 export const handleSave = createAppAsyncThunk(
   'notes/handleSave',
-  async (_, {dispatch, getState}) => {
-    const selectedNote = getSelectedNote(getState());
+  async (note: IEditedNote | undefined, {dispatch}) => {
+    if (!note) return; // todo?
 
-    if (selectedNote.isNew) {
-      const newNote = {id: selectedNote.id, title: selectedNote.draftTitle, text: selectedNote.draftText};
-      await dispatch(createNote(newNote))
-        .unwrap()
-        .then(() => dispatch(fetchNotes()));
-      dispatch(removeDraftNote(selectedNote.id)); // there is filter already in the createNote?
+    if (note.isNew) {
+      const newNote = {
+        id: note.id,
+        title: note.draftTitle,
+        text: note.draftText
+      };
+
+      const createdNote = await dispatch(createNote.initiate(newNote)).unwrap();
+      dispatch(selectNote(createdNote.id));
+      dispatch(removeDraftNote(note.id)); // todo there is filter already in the createNote?
+
     } else {
-      await dispatch(updateNoteById({
-        id: selectedNote.id,
-        title: selectedNote.draftTitle,
-        text: selectedNote.draftText
-      })).unwrap()
-        .then(() => dispatch(fetchNotes()));
+      const newNote = {
+        id: note.id,
+        title: note.draftTitle,
+        text: note.draftText
+      };
+      const updatedNote = await dispatch(updateNote.initiate(newNote)).unwrap();
+      dispatch(selectNote(updatedNote.id));
+      dispatch(removeDraftNote(note.id)); // todo there is filter already in the createNote?
     }
+
 });
 
 export const handleAddDraft = createAppAsyncThunk(
@@ -92,25 +46,24 @@ export const handleAddDraft = createAppAsyncThunk(
 });
 
 export const handleRemove = createAppAsyncThunk(
-  'notes/remove',
-  async (_, {dispatch, getState}) => {
-    const selectedNote = getSelectedNote(getState());
+  'notes/handleRemove',
+  async (note: IEditedNote | undefined, {dispatch}) => {
+    if (!note) return;
 
     const isConfirmed = window.confirm('Are you sure you want to remove note?');
-    if (!isConfirmed || !selectedNote){
+    if (!isConfirmed){
       return;
     }
 
-    if (!selectedNote.isNew) { // unwrap?
-      dispatch(removeNoteById(selectedNote.id)).then(() => {
-        dispatch(fetchNotes());
-        dispatch(selectNote(-1));
-      });
+    if (!note.isNew) {
+      // does it good practice?
+      await dispatch(removeNoteById.initiate(note.id));
+      dispatch(selectNote(-1));
     } else {
-      dispatch(removeDraftNote(selectedNote.id));
+      dispatch(removeDraftNote(note.id));
       dispatch(selectNote(-1));
     }
-  });
+});
 
 interface IUpdatedNoteData {
   title?: string;

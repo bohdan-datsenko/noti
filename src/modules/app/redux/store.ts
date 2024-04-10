@@ -1,9 +1,12 @@
 import {configureStore, createAsyncThunk} from '@reduxjs/toolkit';
 import {rootReducer} from './rootReducer';
+import notesApi from '../../notes/api/notesApi';
 
 export const setupStore = () => {
   return configureStore({
-    reducer: rootReducer
+    reducer: rootReducer,
+    middleware: (getDefaultMiddleware) =>
+      getDefaultMiddleware().concat(notesApi.middleware)
   })
 }
 

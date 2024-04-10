@@ -1,8 +1,5 @@
 import {createSlice, PayloadAction} from '@reduxjs/toolkit';
 import {IEditedNote, INote} from '../types/notes';
-import {createNote, fetchNotes, updateNoteById} from './thunks';
-import {notesMatchers} from './matchers';
-import {ActionWithMetadata} from '../../app';
 
 // todo where to store interfaces
 interface NotesState {
@@ -21,6 +18,21 @@ const notesSlice = createSlice({
   name: 'notes',
   initialState: initialState,
   reducers: {
+    setNotes: (state, action:PayloadAction<INote[]>) => {
+      const draftNotes = state.notes.filter((note) => note.isEdited);
+      const draftNotesIds = draftNotes.map((note) => note.id);
+      const fetchedNotes = action.payload
+        .filter((fetchedNote) => !draftNotesIds.includes(fetchedNote.id))
+        .map((fetchedNote) => ({...fetchedNote,
+          draftTitle: '',
+          draftText: '',
+          isEdited: false,
+          isNew: false
+        }));
+      const fetchedNotesIds = fetchedNotes.map((note) => note.id);
+
+      state.notes = [...fetchedNotes, ...draftNotes.filter((draftNote) => !fetchedNotesIds.includes(draftNote.id))];
+    },
     selectNote: (state, action: PayloadAction<number>) => {
       state.selectedId = action.payload;
     },
@@ -52,37 +64,10 @@ const notesSlice = createSlice({
       state.notes = state.notes.filter(({id}) => id !== action.payload);
     },
   },
-  extraReducers: (builder) => {
-    builder
-      .addCase(fetchNotes.fulfilled, (state, action) => {
-        const draftNotes = state.notes.filter((note) => note.isEdited);
-        const draftNotesIds = draftNotes.map((note) => note.id);
-        const fetchedNotes = action.payload
-          .filter((fetchedNote) => !draftNotesIds.includes(fetchedNote.id))
-          .map((fetchedNote) => ({...fetchedNote,
-            draftTitle: '',
-            draftText: '',
-            isEdited: false,
-            isNew: false
-          }));
-        const fetchedNotesIds = fetchedNotes.map((note) => note.id);
-
-        state.notes = [...fetchedNotes, ...draftNotes.filter((draftNote) => !fetchedNotesIds.includes(draftNote.id))];
-      })
-      .addCase(createNote.fulfilled, (state, action) => {
-        state.selectedId = action.payload;
-      })
-      .addCase(updateNoteById.fulfilled, (state, action) => {
-        state.notes = state.notes.filter(({id}) => id !== action.payload);
-        state.selectedId = action.payload; // todo
-      })
-      .addMatcher(notesMatchers, (state, action: ActionWithMetadata) => {
-        state.isLoading = action.meta.requestStatus === 'pending';
-      })
-  }
 });
 
 export const {
+  setNotes,
   selectNote,
   addDraftNote,
   updateDraftNote,

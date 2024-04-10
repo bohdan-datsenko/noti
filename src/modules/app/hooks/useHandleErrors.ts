@@ -2,7 +2,7 @@ import {useAppDispatch, useAppSelector} from './redux';
 import {handleError} from '../utils/utils';
 import {removeError} from '../redux/errorSlice';
 
-// make alerts as hook?
+// todo make alerts as hook?
 export const useHandleErrors = () => {
   const dispatch = useAppDispatch();
   const errors = useAppSelector((state) => state.errorReducer.errors);

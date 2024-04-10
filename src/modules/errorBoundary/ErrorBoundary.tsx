@@ -19,7 +19,7 @@ class ErrorBoundary extends Component<ErrorBoundaryProps, IState> {
   }
 
   static getDerivedStateFromError(error: any) {
-    // Update state so the next render will show the fallback UI.
+    // todo Update state so the next render will show the fallback UI.
     return { error: {message: error.message} };
   }
 
