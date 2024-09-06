@@ -6,7 +6,7 @@
 .pnp.js
 
 # local settings
-/.idea
+.idea
 
 # testing
 /coverage
